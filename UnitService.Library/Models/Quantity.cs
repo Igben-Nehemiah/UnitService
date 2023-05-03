@@ -2,18 +2,19 @@
 
 namespace UnitService.Library.Models
 {
-    public class Quantity
+    public class Quantity : ICloneable, IEquatable<Quantity>
     {
-        public Quantity(double? value, Unit unit)
+        public Quantity(double? magnitude, Unit unit)
         {
             CurrentUnit = unit;
-            Value = value;
+            Magnitude = magnitude;
         }
 
         public Unit CurrentUnit { get; set; }
-        public double? Value { get; set; }
+        public double? Magnitude { get; set; }
         public string Dimensionality => CurrentUnit.Dimensionality;
 
+        public bool HasSameUnit(Quantity otherQty) => CurrentUnit == otherQty.CurrentUnit;
         public Quantity To(Unit unit)
         {
             // Check if dimensions are consistent
@@ -22,20 +23,49 @@ namespace UnitService.Library.Models
             throw new NotImplementedException();
         }
 
-
-        public static Quantity operator *(Quantity quantity, double number)
-        {
-            return new Quantity(quantity.Value.GetValueOrDefault() * number,
-                quantity.CurrentUnit);
-        }
-
-        public static Quantity operator *(double number, Quantity quantity) => quantity * number;
-        
         public Quantity ToBaseUnit()
         {
             throw new NotImplementedException();
         }
 
-        public override string ToString() => $"Quantity(value:{Value}, unit:{CurrentUnit})";
+        #region Operators
+        public static Quantity operator *(Quantity quantity, double number)
+        {
+            return new Quantity(quantity.Magnitude.GetValueOrDefault() * number,
+                quantity.CurrentUnit);
+        }
+
+        public static Quantity operator *(double number, Quantity quantity) => quantity * number;
+        
+        public static Quantity operator +(Quantity qty1, Quantity qty2)
+        {
+            if (!qty1.CurrentUnit.HasSameDimensionAs(qty2.CurrentUnit)) throw new Exception();
+
+            // Use unit of left qty1 left hand for now
+            var qty3 = qty1.To(qty2.CurrentUnit);
+            return qty1 + qty3;
+        }
+
+        public static Quantity operator -(Quantity qty)
+        {
+            return new Quantity(-qty.Magnitude, qty.CurrentUnit);
+        }
+        #endregion
+
+        public object Clone() => new Quantity(Magnitude, CurrentUnit);
+
+        public override string ToString() => $"Quantity(value:{Magnitude}, unit:{CurrentUnit})";
+
+
+        #region Equality
+        public bool Equals(Quantity otherQty)
+        {
+            if (!Magnitude.HasValue || !otherQty.Magnitude.HasValue) return false;
+
+            return Magnitude.Value == otherQty.Magnitude.Value &&
+                Dimensionality == otherQty.Dimensionality &&
+                CurrentUnit == otherQty.CurrentUnit;
+        }
+        #endregion
     }
 }
