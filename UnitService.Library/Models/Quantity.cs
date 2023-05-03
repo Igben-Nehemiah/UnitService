@@ -10,16 +10,31 @@ namespace UnitService.Library.Models
             Magnitude = magnitude;
         }
 
+        #region Properties
         public Unit CurrentUnit { get; set; }
         public double? Magnitude { get; set; }
         public string Dimensionality => CurrentUnit.Dimensionality;
+        #endregion
 
-        public bool HasSameUnit(Quantity otherQty) => CurrentUnit == otherQty.CurrentUnit;
-        public Quantity To(Unit unit)
+        public Quantity ConvertTo(Unit unit)
         {
             // Check if dimensions are consistent
             if (!CurrentUnit.HasSameDimensionAs(unit)) throw new Exception();
 
+            throw new NotImplementedException();
+        }
+
+        public Quantity ConvertTo(string unitAsString)
+        {
+            bool parsedUnit = Unit.TryParse(unitAsString, out Unit unit);
+            // Check if dimensions are consistent
+            if (!parsedUnit) throw new Exception();
+
+            throw new NotImplementedException();
+        }
+
+        public bool TryConvertTo(Unit unit, out Quantity qty)
+        {
             throw new NotImplementedException();
         }
 
@@ -39,11 +54,21 @@ namespace UnitService.Library.Models
         
         public static Quantity operator +(Quantity qty1, Quantity qty2)
         {
+            // Not possible to add quantities of different dimensions
             if (!qty1.CurrentUnit.HasSameDimensionAs(qty2.CurrentUnit)) throw new Exception();
 
+            // Check if the quantities both have valid magnitudes
+            if (!qty1.Magnitude.HasValue || !qty2.Magnitude.HasValue) throw new Exception();
+
+            // if quantities have the same unit, there is no need for a conversion
+            if (qty1.CurrentUnit == qty2.CurrentUnit)
+            {
+                return new Quantity(qty1.Magnitude + qty2.Magnitude, qty1.CurrentUnit);
+            }
+
+
             // Use unit of left qty1 left hand for now
-            var qty3 = qty1.To(qty2.CurrentUnit);
-            return qty1 + qty3;
+            return qty1 + qty2.ConvertTo(qty1.CurrentUnit);
         }
 
         public static Quantity operator -(Quantity qty)
@@ -79,6 +104,11 @@ namespace UnitService.Library.Models
                 return true;
             }
             return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
         }
         #endregion
     }
