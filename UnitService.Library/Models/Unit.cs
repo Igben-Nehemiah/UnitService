@@ -16,10 +16,9 @@ namespace UnitService.Library.Models
 
         public bool HasSameDimensionAs(Unit unit) => Dimensionality == unit.Dimensionality;
 
-        
-        public static Unit operator *(Unit left, Unit right)
+
+        public static bool TryParse(string unitAsString, out Unit unit)
         {
-            //return new Unit();
             throw new NotImplementedException();
         }
 
@@ -29,6 +28,12 @@ namespace UnitService.Library.Models
         public static bool operator ==(Unit unit1, Unit unit2) => unit1.Equals(unit2);
 
         public static bool operator !=(Unit unit1, Unit unit2) => !(unit1 == unit2);
+
+        public static Unit operator *(Unit left, Unit right)
+        {
+            //return new Unit();
+            throw new NotImplementedException();
+        }
         #endregion
 
         #region Equality
@@ -49,6 +54,10 @@ namespace UnitService.Library.Models
             return false;
         }
 
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
         #endregion
     }
 }
