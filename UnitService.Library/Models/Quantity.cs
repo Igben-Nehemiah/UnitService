@@ -50,6 +50,10 @@ namespace UnitService.Library.Models
         {
             return new Quantity(-qty.Magnitude, qty.CurrentUnit);
         }
+
+        public static bool operator ==(Quantity qty1, Quantity qty2) => qty1.Equals(qty2);
+
+        public static bool operator !=(Quantity qty1, Quantity qty2) => !(qty1 == qty2);
         #endregion
 
         public object Clone() => new Quantity(Magnitude, CurrentUnit);

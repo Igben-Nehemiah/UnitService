@@ -23,7 +23,13 @@ namespace UnitService.Library.Models
             throw new NotImplementedException();
         }
 
+        #region Operators
         public static Quantity operator *(double number, Unit unit) => new Quantity(number, unit);
+
+        public static bool operator ==(Unit unit1, Unit unit2) => unit1.Equals(unit2);
+
+        public static bool operator !=(Unit unit1, Unit unit2) => !(unit1 == unit2);
+        #endregion
 
         #region Equality
         public bool Equals(Unit other)
