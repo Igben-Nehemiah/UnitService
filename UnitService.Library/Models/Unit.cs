@@ -38,6 +38,17 @@ namespace UnitService.Library.Models
                 && Symbol == other.Symbol
                 && Dimensionality == other.Dimensionality;
         }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is Unit q)
+            {
+                q.Equals(this);
+                return true;
+            }
+            return false;
+        }
+
         #endregion
     }
 }

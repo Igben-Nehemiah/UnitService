@@ -70,6 +70,16 @@ namespace UnitService.Library.Models
                 Dimensionality == otherQty.Dimensionality &&
                 CurrentUnit == otherQty.CurrentUnit;
         }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is Quantity q)
+            {
+                q.Equals(this); 
+                return true;
+            }
+            return false;
+        }
         #endregion
     }
 }
