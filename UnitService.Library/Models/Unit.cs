@@ -2,7 +2,7 @@
 
 namespace UnitService.Library.Models
 {
-    public class Unit : IEquatable<Unit>
+    public struct Unit : IEquatable<Unit>
     {
         public string Name { get; set; }
         public string Symbol { get; set; }
