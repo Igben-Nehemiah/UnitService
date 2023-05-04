@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace UnitService.Library.Models
 {
@@ -112,78 +111,5 @@ namespace UnitService.Library.Models
             return base.GetHashCode();
         }
         #endregion
-    }
-
-    public readonly struct Dimension : IEquatable<Dimension>
-    {
-        private const string LENGTH = "[Length]", TIME = "[Time]",
-            MASS = "[Mass]", TEMPERATURE = "[Temperature]", CURRENT = "[Current]";
-        private readonly double? _lengthExp, _timeExp, _massExp, _currentExp, _tempExp;
-
-        public Dimension(double? lengthExp, 
-            double? timeExp,
-            double? massExp, 
-            double? currentExp, 
-            double? tempExp)
-        {
-            _lengthExp = lengthExp;
-            _timeExp = timeExp;
-            _massExp = massExp;
-            _currentExp = currentExp;
-            _tempExp = tempExp;
-        }
-
-        public Dictionary<string, double?> GetComponentDimensions()
-        {
-            Dictionary<string, double?> dim = new Dictionary<string, double?>
-            {
-                [LENGTH] = _lengthExp,
-                [TIME] = _timeExp,
-                [MASS] = _massExp,
-                [TEMPERATURE] = _tempExp,
-                [CURRENT] = _currentExp
-            };
-            return dim;
-        }
-
-        #region Operators
-        public static bool operator ==(Dimension dim1, Dimension dim2)
-        {
-            return dim1.Equals(dim2);
-        }
-
-        public static bool operator !=(Dimension dim1, Dimension dim2)
-        {
-            return !(dim1 == dim2);
-        }
-        #endregion
-
-        #region Equality
-        public bool Equals(Dimension other) => ToString() == other.ToString();
-
-        public override bool Equals(object obj)
-        {
-            if (obj is Dimension d) 
-            { 
-                return Equals(obj);
-            }
-            return false;
-        }
-        #endregion
-        public override int GetHashCode()
-        {
-            return base.GetHashCode();
-        }
-
-        public override string ToString()
-        {
-            string dim = _lengthExp.HasValue && _lengthExp.Value != 0 ? LENGTH+"^" + _lengthExp.Value : "";
-            dim += _timeExp.HasValue && _timeExp.Value != 0 ? TIME+"^" + _timeExp.Value : "";
-            dim += _massExp.HasValue && _massExp.Value != 0 ? MASS+"^" + _massExp.Value : "";
-            dim += _currentExp.HasValue && _currentExp.Value != 0 ? CURRENT+"^" + _currentExp.Value : "";
-            dim += _tempExp.HasValue && _tempExp.Value != 0 ? TEMPERATURE+"^" + _tempExp.Value : "";
-
-            return dim;
-        }
     }
 }
