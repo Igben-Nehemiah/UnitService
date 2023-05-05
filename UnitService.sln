@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33205.214
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitService.Library", "UnitService.Library\UnitService.Library.csproj", "{9DECBE0B-C7EE-496B-8A35-727999CD3C8E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitService.Library", "UnitService.Library\UnitService.Library.csproj", "{9DECBE0B-C7EE-496B-8A35-727999CD3C8E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitService.ConsoleTester", "UnitService.ConsoleTester\UnitService.ConsoleTester.csproj", "{BD2EE59A-DB22-401B-B48F-A58376483388}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitService.ConsoleTester", "UnitService.ConsoleTester\UnitService.ConsoleTester.csproj", "{BD2EE59A-DB22-401B-B48F-A58376483388}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitService.Test", "UnitService.Test\UnitService.Test.csproj", "{B118BAA3-648A-4909-9627-C32CC07E6BFE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{BD2EE59A-DB22-401B-B48F-A58376483388}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BD2EE59A-DB22-401B-B48F-A58376483388}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BD2EE59A-DB22-401B-B48F-A58376483388}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B118BAA3-648A-4909-9627-C32CC07E6BFE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B118BAA3-648A-4909-9627-C32CC07E6BFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B118BAA3-648A-4909-9627-C32CC07E6BFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B118BAA3-648A-4909-9627-C32CC07E6BFE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
