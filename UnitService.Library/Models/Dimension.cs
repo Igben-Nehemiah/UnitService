@@ -26,6 +26,8 @@ namespace UnitService.Library.Models
         {
             // [Length]^3[Mass][Time]^(-1/3)
 
+            // Remove every white space;
+
             dimensionStr = dimensionStr.Trim();
             if (string.IsNullOrEmpty(dimensionStr)) // Check later
                 throw new Exception();
@@ -63,9 +65,11 @@ namespace UnitService.Library.Models
                         dimensionStr.Substring(currentRightSquareBracketIndex + 1,
                             dimensionStr.Length - currentRightSquareBracketIndex - 1).Trim()
                         : dimensionStr.Substring(currentRightSquareBracketIndex + 1,
-                            nextLeftSquareBracketIndex - currentLeftSquareBracketIndex - 1).Trim();
+                            nextLeftSquareBracketIndex - currentRightSquareBracketIndex - 1).Trim();
 
-                    double exponent = string.IsNullOrEmpty(exponentPart) ? 1 : double.Parse(exponentPart[1..]);
+
+                    double exponent = string.IsNullOrEmpty(exponentPart) ? 1 
+                        : double.Parse(StripOffBrackets(exponentPart[1..]));
 
                     dimensionDictionary[dimensionKey] = exponent;
                 }
@@ -76,11 +80,21 @@ namespace UnitService.Library.Models
 
             return new Dimension(lengthExp: dimensionDictionary[Dimensions.LENGTH],
                 timeExp: dimensionDictionary[Dimensions.TIME],
-                massExp: dimensionDictionary[Dimensions.TIME],
+                massExp: dimensionDictionary[Dimensions.MASS],
                 currentExp: dimensionDictionary[Dimensions.CURRENT],
                 tempExp: dimensionDictionary[Dimensions.TEMPERATURE]);
 
             static string PadWithSquareBracket(string str) => "[" + str + "]";
+            static string StripOffBrackets(string str)
+            {
+                if (string.IsNullOrEmpty(str)) return str;
+                // This should be re-written
+                if (str[0] == '(' && str[^1] == ')')
+                {
+                    return str[1..(str.Length - 1)];
+                }
+                return str;
+            }
         }
 
         public static Dimension Parse(string dim)
