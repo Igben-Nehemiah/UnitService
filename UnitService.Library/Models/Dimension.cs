@@ -6,13 +6,13 @@ namespace UnitService.Library.Models
 {
     public struct Dimension
     {
-        public double LengthExp;
-        public double TimeExp;
-        public double MassExp;
-        public double CurrentExp;
-        public double TempExp;
+        public double LengthExp, TimeExp, MassExp, CurrentExp, TempExp;
 
-        public Dimension(double lengthExp, double timeExp, double massExp, double currentExp, double tempExp)
+        public Dimension(double lengthExp, 
+            double timeExp, 
+            double massExp, 
+            double currentExp, 
+            double tempExp)
         {
             LengthExp = lengthExp;
             TimeExp = timeExp;
@@ -24,10 +24,6 @@ namespace UnitService.Library.Models
 
         private static Dimension _ParseLiteral(string dimensionStr)
         {
-            // [Length]^3[Mass][Time]^(-1/3)
-
-            // Remove every white space;
-
             dimensionStr = dimensionStr.Trim();
             if (string.IsNullOrEmpty(dimensionStr)) // Check later
                 throw new Exception();

@@ -14,12 +14,13 @@ namespace UnitService.Library.Models
         public Unit CurrentUnit { get; set; }
         public double? Magnitude { get; set; }
         public Dimension Dimension => CurrentUnit.Dimension;
-        #endregion
+        #endregion Properties
 
-        public Quantity ConvertTo(Unit unit)
+        #region Methods
+        public Quantity ConvertTo(Unit otherUnit)
         {
             // Check if dimensions are consistent
-            if (!CurrentUnit.HasSameDimensionAs(unit)) throw new Exception();
+            if (!CurrentUnit.HasSameDimensionAs(otherUnit)) throw new Exception();
 
             throw new NotImplementedException();
         }
@@ -42,6 +43,12 @@ namespace UnitService.Library.Models
         {
             throw new NotImplementedException();
         }
+
+        public object Clone() => new Quantity(Magnitude, CurrentUnit);
+
+        public override string ToString() => $"Quantity(value:{Magnitude}, unit:{CurrentUnit})";
+
+        #endregion Methods
 
         #region Operators
         public static Quantity operator *(Quantity quantity, double number)
@@ -79,12 +86,7 @@ namespace UnitService.Library.Models
         public static bool operator ==(Quantity qty1, Quantity qty2) => qty1.Equals(qty2);
 
         public static bool operator !=(Quantity qty1, Quantity qty2) => !(qty1 == qty2);
-        #endregion
-
-        public object Clone() => new Quantity(Magnitude, CurrentUnit);
-
-        public override string ToString() => $"Quantity(value:{Magnitude}, unit:{CurrentUnit})";
-
+        #endregion Operators
 
         #region Equality
         public bool Equals(Quantity otherQty)
@@ -110,6 +112,6 @@ namespace UnitService.Library.Models
         {
             return HashCode.Combine(Magnitude, CurrentUnit);
         }
-        #endregion
+        #endregion Equality
     }
 }

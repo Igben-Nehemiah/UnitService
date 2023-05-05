@@ -4,9 +4,6 @@ namespace UnitService.Library.Models
 {
     public struct Unit : IEquatable<Unit>
     {
-        public string Name { get; set; }
-        public string Symbol { get; set; }
-        public Dimension Dimension { get; set; }
         public Unit(string name, string symbol, Dimension dimension = default)
         {
             Name = name;
@@ -14,13 +11,20 @@ namespace UnitService.Library.Models
             Dimension = dimension;    
         }
 
-        public bool HasSameDimensionAs(Unit unit) => Dimension == unit.Dimension;
+        #region Properties
+        public string Name { get; set; }
+        public string Symbol { get; set; }
+        public Dimension Dimension { get; set; }
+        #endregion Properties
 
+        #region Methods
+        public bool HasSameDimensionAs(Unit unit) => Dimension == unit.Dimension;
 
         public static bool TryParse(string unitAsString, out Unit unit)
         {
             throw new NotImplementedException();
         }
+        #endregion Methods
 
         #region Operators
         public static Quantity operator *(double number, Unit unit) => new Quantity(number, unit);
@@ -34,7 +38,7 @@ namespace UnitService.Library.Models
             //return new Unit();
             throw new NotImplementedException();
         }
-        #endregion
+        #endregion Operators
 
         #region Equality
         public bool Equals(Unit other)
@@ -58,6 +62,6 @@ namespace UnitService.Library.Models
         {
             return HashCode.Combine(Name, Symbol, Dimension);
         }
-        #endregion
+        #endregion Equality
     }
 }
