@@ -2,6 +2,7 @@
 {
     public static class Dimensions
     {
+        public const string NONE = "None";
         public const string LENGTH = "[Length]";
         public const string TIME = "[Time]";
         public const string MASS = "[Mass]";
