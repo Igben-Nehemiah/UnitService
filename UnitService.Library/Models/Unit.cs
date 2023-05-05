@@ -6,15 +6,15 @@ namespace UnitService.Library.Models
     {
         public string Name { get; set; }
         public string Symbol { get; set; }
-        public string Dimensionality { get; set; }
-        public Unit(string name, string symbol, string dimensionality)
+        public Dimension Dimension { get; set; }
+        public Unit(string name, string symbol, Dimension dimension = default)
         {
             Name = name;
             Symbol = symbol;
-            Dimensionality = dimensionality;    
+            Dimension = dimension;    
         }
 
-        public bool HasSameDimensionAs(Unit unit) => Dimensionality == unit.Dimensionality;
+        public bool HasSameDimensionAs(Unit unit) => Dimension == unit.Dimension;
 
 
         public static bool TryParse(string unitAsString, out Unit unit)
@@ -41,7 +41,7 @@ namespace UnitService.Library.Models
         {
             return Name == other.Name
                 && Symbol == other.Symbol
-                && Dimensionality == other.Dimensionality;
+                && Dimension == other.Dimension;
         }
 
         public override bool Equals(object obj)
@@ -56,7 +56,7 @@ namespace UnitService.Library.Models
 
         public override int GetHashCode()
         {
-            return base.GetHashCode();
+            return HashCode.Combine(Name, Symbol, Dimension);
         }
         #endregion
     }
