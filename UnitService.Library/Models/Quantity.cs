@@ -13,7 +13,7 @@ namespace UnitService.Library.Models
         #region Properties
         public Unit CurrentUnit { get; set; }
         public double? Magnitude { get; set; }
-        public string Dimensionality => CurrentUnit.Dimensionality;
+        public Dimension Dimension => CurrentUnit.Dimension;
         #endregion
 
         public Quantity ConvertTo(Unit unit)
@@ -92,7 +92,7 @@ namespace UnitService.Library.Models
             if (!Magnitude.HasValue || !otherQty.Magnitude.HasValue) return false;
 
             return Magnitude.Value == otherQty.Magnitude.Value &&
-                Dimensionality == otherQty.Dimensionality &&
+                Dimension == otherQty.Dimension &&
                 CurrentUnit == otherQty.CurrentUnit;
         }
 
@@ -108,7 +108,7 @@ namespace UnitService.Library.Models
 
         public override int GetHashCode()
         {
-            return base.GetHashCode();
+            return HashCode.Combine(Magnitude, CurrentUnit);
         }
         #endregion
     }
