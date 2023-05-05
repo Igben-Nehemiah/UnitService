@@ -7,6 +7,7 @@ namespace UnitService.Library.Models
     public readonly struct Dimension : IEquatable<Dimension>
     {
         private readonly double? _lengthExp, _timeExp, _massExp, _currentExp, _tempExp;
+        private readonly bool? _none;
 
         public static Dimension Length = new Dimension();
         public static Dimension Mass = new Dimension();
@@ -14,42 +15,49 @@ namespace UnitService.Library.Models
         public static Dimension Current = new Dimension();
         public static Dimension Temperature = new Dimension();
 
-        public Dimension(double? lengthExp, 
-            double? timeExp,
-            double? massExp, 
-            double? currentExp, 
-            double? tempExp)
+        private Dimension(double? lengthExp = default, 
+            double? timeExp = default,
+            double? massExp = default, 
+            double? currentExp = default, 
+            double? tempExp = default,
+            bool? none = default)
         {
             _lengthExp = lengthExp;
             _timeExp = timeExp;
             _massExp = massExp;
             _currentExp = currentExp;
             _tempExp = tempExp;
+            _none = none;
         }
-        
-        //public Dimension(string dimensionString)
+
+        //public Dimension(st): this(timeExp: 0, massExp: 0, lengthExp: 0, currentExp: 0, tempExp: 0, none: true)
         //{
 
         //}
 
-        private string PadWithSquareBracket(string str) => "[" + str + "]";
-
-        private void _ParseLiteral(string dimensionStr)
+        private static Dictionary<string, double> _ParseLiteral(string dimensionStr)
         {
-            dimensionStr = dimensionStr.Trim();
-            if (string.IsNullOrEmpty(dimensionStr) || dimensionStr.Length < 5) // Check later
-                throw new Exception();
-
             // [Length]^3[Mass][Time]^(-1/3)
 
-            Dictionary<string, double?> dimensionDictionary = new Dictionary<string, double?>
+            dimensionStr = dimensionStr.Trim();
+            if (string.IsNullOrEmpty(dimensionStr)) // Check later
+                throw new Exception();
+
+            Dictionary<string, double> dimensionDictionary = new Dictionary<string, double>
             {
                 [Dimensions.LENGTH] = 0,
                 [Dimensions.TIME] = 0,
                 [Dimensions.MASS] = 0,
                 [Dimensions.TEMPERATURE] = 0,
-                [Dimensions.CURRENT] = 0
+                [Dimensions.CURRENT] = 0,
+                [Dimensions.NONE] = 0
             };
+
+            if (dimensionStr == "1")
+            {
+                dimensionDictionary[Dimensions.NONE] = 1;
+                return dimensionDictionary;
+            }
 
             int currentLeftSquareBracketIndex = -1, currentRightSquareBracketIndex = -1;
 
@@ -82,32 +90,56 @@ namespace UnitService.Library.Models
                 }
             }
             while (currentLeftSquareBracketIndex > -1 && currentRightSquareBracketIndex > -1);
+
+            return dimensionDictionary;
+
+            static string PadWithSquareBracket(string str) => "[" + str + "]";
         }
 
-        private Dimension _Parse(string dim)
+        public static Dimension Parse(string dim)
         {
             string[] parts = dim.Split('/');
 
-            if (parts.Length == 1)
+            var numerator = _ParseLiteral(parts[0]);
+
+            var denominator = parts.Length > 1 ? _ParseLiteral(parts[1]) : null;
+
+            var combined = new Dictionary<string, double>();
+
+            // Check if numerator is one;
+
+            foreach(var key in numerator.Keys)
             {
-                // No denominator
+                combined[key] = numerator.GetValueOrDefault(key);
             }
 
-            string numerator = parts[0];
-            string? denominator = parts.Length == 2 ? parts[1] : null;
+            if (!(denominator == null))
+            {
+                foreach (var key in denominator.Keys)
+                {
+                    combined[key] -= denominator.GetValueOrDefault(key);
+                }
+            }
 
-
-            throw new NotImplementedException();
-        }
-
-        private Dimension Parse(string dim)
-        {
-            throw new NotImplementedException();
+            return new Dimension(lengthExp: combined[Dimensions.LENGTH], 
+                timeExp: combined[Dimensions.TIME],
+                massExp: combined[Dimensions.MASS],
+                currentExp: combined[Dimensions.CURRENT],
+                tempExp: combined[Dimensions.TEMPERATURE]);
         }
 
         public static bool TryParse(string dimString, out Dimension dim)
         {
-            throw new NotImplementedException();
+            try
+            {
+                dim = Parse(dimString);
+                return true;
+            }
+            catch (Exception)
+            {
+                dim = default;
+                return false;
+            }
         }
 
         public Dictionary<string, double?> GetComponentDimensions()
