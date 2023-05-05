@@ -7,6 +7,7 @@ Dimension dimension= new Dimension();
 dimension.LengthExp = 1;
 dimension.TimeExp = -1;
 
-var t = Dimension.Parse("[Length]^3[Mass][Time]^(-1/3)");
+var t = Dimension.Parse(@"[Length]/[Time]");
 
-Console.WriteLine(dimension.ToString());
+
+Console.WriteLine(dimension == t);
