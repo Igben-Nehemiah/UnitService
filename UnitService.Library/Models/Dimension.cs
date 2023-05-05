@@ -4,38 +4,25 @@ using UnitService.Library.Constants;
 
 namespace UnitService.Library.Models
 {
-    public readonly struct Dimension : IEquatable<Dimension>
+    public struct Dimension
     {
-        private readonly double? _lengthExp, _timeExp, _massExp, _currentExp, _tempExp;
-        private readonly bool? _none;
+        public double LengthExp;
+        public double TimeExp;
+        public double MassExp;
+        public double CurrentExp;
+        public double TempExp;
 
-        public static Dimension Length = new Dimension();
-        public static Dimension Mass = new Dimension();
-        public static Dimension Time = new Dimension();
-        public static Dimension Current = new Dimension();
-        public static Dimension Temperature = new Dimension();
-
-        private Dimension(double? lengthExp = default, 
-            double? timeExp = default,
-            double? massExp = default, 
-            double? currentExp = default, 
-            double? tempExp = default,
-            bool? none = default)
+        public Dimension(double lengthExp, double timeExp, double massExp, double currentExp, double tempExp)
         {
-            _lengthExp = lengthExp;
-            _timeExp = timeExp;
-            _massExp = massExp;
-            _currentExp = currentExp;
-            _tempExp = tempExp;
-            _none = none;
+            LengthExp = lengthExp;
+            TimeExp = timeExp;
+            MassExp = massExp;
+            CurrentExp = currentExp;
+            TempExp = tempExp;
         }
 
-        //public Dimension(st): this(timeExp: 0, massExp: 0, lengthExp: 0, currentExp: 0, tempExp: 0, none: true)
-        //{
 
-        //}
-
-        private static Dictionary<string, double> _ParseLiteral(string dimensionStr)
+        private static Dimension _ParseLiteral(string dimensionStr)
         {
             // [Length]^3[Mass][Time]^(-1/3)
 
@@ -50,22 +37,16 @@ namespace UnitService.Library.Models
                 [Dimensions.MASS] = 0,
                 [Dimensions.TEMPERATURE] = 0,
                 [Dimensions.CURRENT] = 0,
-                [Dimensions.NONE] = 0
             };
 
             if (dimensionStr == "1")
+                return new Dimension();
+
+            int currentLeftSquareBracketIndex = dimensionStr.IndexOf("[");
+            int currentRightSquareBracketIndex = dimensionStr.IndexOf("]");
+
+            while (currentLeftSquareBracketIndex > -1 && currentRightSquareBracketIndex > -1)
             {
-                dimensionDictionary[Dimensions.NONE] = 1;
-                return dimensionDictionary;
-            }
-
-            int currentLeftSquareBracketIndex = -1, currentRightSquareBracketIndex = -1;
-
-            do
-            {
-                currentLeftSquareBracketIndex = dimensionStr.IndexOf("[", currentLeftSquareBracketIndex + 1);
-                currentRightSquareBracketIndex = dimensionStr.IndexOf("]", currentRightSquareBracketIndex + 1);
-
                 string dimensionKey = PadWithSquareBracket(
                     dimensionStr.Substring(currentLeftSquareBracketIndex + 1,
                     currentRightSquareBracketIndex - currentLeftSquareBracketIndex - 1));
@@ -73,14 +54,14 @@ namespace UnitService.Library.Models
                 if (!dimensionDictionary.ContainsKey(dimensionKey))
                     throw new Exception("Unregistered dimension specified");
 
-                if (currentRightSquareBracketIndex > 0 && 
-                    currentRightSquareBracketIndex < dimensionStr.Length - 1) // there are still more characters
+                if (currentRightSquareBracketIndex > 0 &&
+                    currentRightSquareBracketIndex < dimensionStr.Length) // there are still more characters
                 {
                     int nextLeftSquareBracketIndex = dimensionStr.IndexOf("[", currentRightSquareBracketIndex + 1);
 
                     string exponentPart = nextLeftSquareBracketIndex == -1 ?
                         dimensionStr.Substring(currentRightSquareBracketIndex + 1,
-                            dimensionStr.Length - currentRightSquareBracketIndex - 2).Trim()
+                            dimensionStr.Length - currentRightSquareBracketIndex - 1).Trim()
                         : dimensionStr.Substring(currentRightSquareBracketIndex + 1,
                             nextLeftSquareBracketIndex - currentLeftSquareBracketIndex - 1).Trim();
 
@@ -88,10 +69,16 @@ namespace UnitService.Library.Models
 
                     dimensionDictionary[dimensionKey] = exponent;
                 }
-            }
-            while (currentLeftSquareBracketIndex > -1 && currentRightSquareBracketIndex > -1);
 
-            return dimensionDictionary;
+                currentLeftSquareBracketIndex = dimensionStr.IndexOf("[", currentLeftSquareBracketIndex + 1);
+                currentRightSquareBracketIndex = dimensionStr.IndexOf("]", currentRightSquareBracketIndex + 1);
+            };
+
+            return new Dimension(lengthExp: dimensionDictionary[Dimensions.LENGTH],
+                timeExp: dimensionDictionary[Dimensions.TIME],
+                massExp: dimensionDictionary[Dimensions.TIME],
+                currentExp: dimensionDictionary[Dimensions.CURRENT],
+                tempExp: dimensionDictionary[Dimensions.TEMPERATURE]);
 
             static string PadWithSquareBracket(string str) => "[" + str + "]";
         }
@@ -102,30 +89,9 @@ namespace UnitService.Library.Models
 
             var numerator = _ParseLiteral(parts[0]);
 
-            var denominator = parts.Length > 1 ? _ParseLiteral(parts[1]) : null;
+            var denominator = parts.Length > 1 ? _ParseLiteral(parts[1]) : default;
 
-            var combined = new Dictionary<string, double>();
-
-            // Check if numerator is one;
-
-            foreach(var key in numerator.Keys)
-            {
-                combined[key] = numerator.GetValueOrDefault(key);
-            }
-
-            if (!(denominator == null))
-            {
-                foreach (var key in denominator.Keys)
-                {
-                    combined[key] -= denominator.GetValueOrDefault(key);
-                }
-            }
-
-            return new Dimension(lengthExp: combined[Dimensions.LENGTH], 
-                timeExp: combined[Dimensions.TIME],
-                massExp: combined[Dimensions.MASS],
-                currentExp: combined[Dimensions.CURRENT],
-                tempExp: combined[Dimensions.TEMPERATURE]);
+            return numerator/denominator;
         }
 
         public static bool TryParse(string dimString, out Dimension dim)
@@ -142,28 +108,38 @@ namespace UnitService.Library.Models
             }
         }
 
-        public Dictionary<string, double?> GetComponentDimensions()
+        public void Deconstruct(out double lengthExp, 
+            out double timeExp, 
+            out double massExp, 
+            out double currentExp, 
+            out double tempExp)
         {
-            Dictionary<string, double?> dim = new Dictionary<string, double?>
-            {
-                [Dimensions.LENGTH] = _lengthExp,
-                [Dimensions.TIME] = _timeExp,
-                [Dimensions.MASS] = _massExp,
-                [Dimensions.TEMPERATURE] = _tempExp,
-                [Dimensions.CURRENT] = _currentExp
-            };
-            return dim;
+            lengthExp = LengthExp;
+            timeExp = TimeExp;
+            massExp = MassExp;
+            currentExp = CurrentExp;
+            tempExp = TempExp;
         }
 
         #region Operators
-        public static Dimension operator /(Dimension dim1, Dimension dim2)
+        public static Dimension operator *(Dimension first, Dimension second)
         {
-            throw new NotImplementedException();
+            return (
+                first.LengthExp + second.LengthExp,
+                first.TimeExp + second.TimeExp,
+                first.MassExp + second.MassExp,
+                first.CurrentExp + second.CurrentExp,
+                first.TempExp + second.TempExp);
         }
 
-        public static Dimension operator /(Dimension dim1, double constant)
+        public static Dimension operator /(Dimension first, Dimension second)
         {
-            throw new NotImplementedException();
+            return (
+                first.LengthExp - second.LengthExp,
+                first.TimeExp - second.TimeExp,
+                first.MassExp - second.MassExp,
+                first.CurrentExp - second.CurrentExp,
+                first.TempExp - second.TempExp);
         }
 
         public static bool operator ==(Dimension dim1, Dimension dim2)
@@ -185,32 +161,43 @@ namespace UnitService.Library.Models
         {
             return new Dimension();
         }
+
+        public static implicit operator (double LengthExp, double TimeExp, double MassExp, double CurrentExp, double TempExp)(Dimension value)
+        {
+            return (value.LengthExp, value.TimeExp, value.MassExp, value.CurrentExp, value.TempExp);
+        }
+
+        public static implicit operator Dimension((double LengthExp, double TimeExp, double MassExp, double CurrentExp, double TempExp) value)
+        {
+            return new Dimension(value.LengthExp, value.TimeExp, value.MassExp, value.CurrentExp, value.TempExp);
+        }
+
         #endregion
 
         #region Equality
-        public bool Equals(Dimension other) => ToString() == other.ToString();
-
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
-            if (obj is Dimension d) 
-            { 
-                return Equals(obj);
-            }
-            return false;
+            return obj is Dimension other &&
+                   LengthExp == other.LengthExp &&
+                   TimeExp == other.TimeExp &&
+                   MassExp == other.MassExp &&
+                   CurrentExp == other.CurrentExp &&
+                   TempExp == other.TempExp;
         }
-        #endregion
+
         public override int GetHashCode()
         {
-            return base.GetHashCode();
+            return HashCode.Combine(LengthExp, TimeExp, MassExp, CurrentExp, TempExp);
         }
+        #endregion
 
         public override string ToString()
         {
-            string dim = _lengthExp.HasValue && _lengthExp.Value != 0 ? Dimensions.LENGTH +"^" + _lengthExp.Value : "";
-            dim += _timeExp.HasValue && _timeExp.Value != 0 ? Dimensions.TIME +"^" + _timeExp.Value : "";
-            dim += _massExp.HasValue && _massExp.Value != 0 ? Dimensions.MASS +"^" + _massExp.Value : "";
-            dim += _currentExp.HasValue && _currentExp.Value != 0 ? Dimensions.CURRENT +"^" + _currentExp.Value : "";
-            dim += _tempExp.HasValue && _tempExp.Value != 0 ? Dimensions.TEMPERATURE +"^" + _tempExp.Value : "";
+            string dim = LengthExp != 0 ? Dimensions.LENGTH + (LengthExp == 1 ? "" : "^" + LengthExp) : "";
+            dim += TimeExp != 0 ? Dimensions.TIME + (TimeExp == 1 ? "" : "^" + TimeExp) : "";
+            dim += MassExp != 0 ? Dimensions.MASS + (MassExp == 1 ? "" : "^" + MassExp) : "";
+            dim += CurrentExp != 0 ? Dimensions.CURRENT + (CurrentExp == 1 ? "" : "^" + CurrentExp) : "";
+            dim += TempExp != 0 ? Dimensions.TEMPERATURE + (TempExp == 1 ? "" : "^" + TempExp) : "";
 
             return dim;
         }
