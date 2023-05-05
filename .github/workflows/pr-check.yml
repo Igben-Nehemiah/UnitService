@@ -1,0 +1,32 @@
+name: Build and Test Pull Request (PR)
+
+on:
+  pull_request:
+    branches:
+    - main
+
+env:
+  DOTNET_VERSION: '7.0.x' 
+  PROJECT_PATH: 'UnitService.Library/UnitService.Library.csproj'
+
+
+jobs:
+  build-and-test:
+    name: Build-and-test PR on ${{matrix.os}}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [windows-latest]
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }}
+
+    - name: Install dependencies
+      run: dotnet restore ${{env.PROJECT_PATH}}
+      
+    - name: Build library
+      run: dotnet build ${{env.PROJECT_PATH}} --configuration Release --no-restore
