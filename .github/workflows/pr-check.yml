@@ -11,6 +11,7 @@ on:
 env:
   DOTNET_VERSION: '7.0.x' 
   PROJECT_PATH: 'UnitService.Library/UnitService.Library.csproj'
+  TEST_PROJECT_PATH: 'UnitService.Test/UnitService.Test.csproj'
 
 
 jobs:
@@ -33,3 +34,12 @@ jobs:
       
     - name: Build library
       run: dotnet build ${{env.PROJECT_PATH}} --configuration Release --no-restore
+
+    - name: Run unit tests
+      run: dotnet test ${{env.TEST_PROJECT_PATH}} --configuration Release --no-build --logger "trx;LogFileName=test_results.xml" --collect "Code coverage"
+
+    - name: Publish test results
+      uses: actions/upload-artifact@v2
+      with:
+        name: Test Results
+        path: test_results.xml
