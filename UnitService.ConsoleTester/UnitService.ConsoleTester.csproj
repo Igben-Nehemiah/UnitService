@@ -11,4 +11,8 @@
     <PackageReference Include="Microsoft.VisualStudio.Threading" Version="17.5.22" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\UnitService.Library\UnitService.Library.csproj" />
+  </ItemGroup>
+
 </Project>
