@@ -17,11 +17,16 @@ namespace UnitService.Library.Models
         #endregion Properties
 
         #region Methods
-        public Quantity ConvertTo(Unit otherUnit)
+        public Quantity ConvertTo(Unit unit)
         {
             // Check if dimensions are consistent
-            if (!CurrentUnit.HasSameDimensionAs(otherUnit)) throw new Exception();
+            if (!CurrentUnit.HasSameDimensionAs(unit)) throw new Exception();
 
+            throw new NotImplementedException();
+        }
+
+        public static Quantity Convert(Quantity quantity, Unit unit)
+        {
             throw new NotImplementedException();
         }
 
