@@ -32,9 +32,10 @@ namespace UnitService.Library.Models
 
         public Quantity ConvertTo(string unitAsString)
         {
-            bool parsedUnit = Unit.TryParse(unitAsString, out Unit unit);
+            var unit = UnitRegistry.GetUnit(unitAsString);
+
             // Check if dimensions are consistent
-            if (!parsedUnit) throw new Exception();
+            if (!unit.HasSameDimensionAs(Unit)) throw new Exception();
 
             throw new NotImplementedException();
         }
