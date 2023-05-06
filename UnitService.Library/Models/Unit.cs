@@ -20,6 +20,7 @@ namespace UnitService.Library.Models
         public string Symbol { get; set; }
         public Dimension Dimension { get; set; }
         public (double M, double C) BaseUnitRelationship { get; }
+        public bool IsBaseUnit => BaseUnitRelationship == (1, 0);
         #endregion
 
         #region Methods
