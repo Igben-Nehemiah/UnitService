@@ -14,47 +14,56 @@ namespace UnitService.Library.Models
         public Unit Unit { get; set; }
         public double? Magnitude { get; set; }
         public Dimension Dimension => Unit.Dimension;
-        #endregion Properties
+        #endregion
 
         #region Methods
-        public Quantity ConvertTo(Unit unit)
+        public Quantity ConvertToBaseUnit()
         {
-            // Check if dimensions are consistent
-            if (!Unit.HasSameDimensionAs(unit)) throw new Exception();
+            if (Unit.IsBaseUnit) return this;
 
-            throw new NotImplementedException();
+            var quantityMagnitudeInBaseUnit = 1 / Unit.BaseUnitRelationship.M *
+                (Magnitude - Unit.BaseUnitRelationship.C);
+
+            var baseUnit = UnitRegistry.GetBaseUnit(Dimension);
+
+            return new Quantity(quantityMagnitudeInBaseUnit, baseUnit);
         }
-
-        public static Quantity Convert(Quantity quantity, Unit unit)
+        public Quantity ConvertTo(Unit toUnit)
         {
-            throw new NotImplementedException();
+            if (!Unit.HasSameDimensionAs(toUnit)) throw new Exception();
+
+            var quantityInBaseUnit = ConvertToBaseUnit();
+
+            var magnitudeInToUnit = toUnit.BaseUnitRelationship.M * quantityInBaseUnit.Magnitude +
+                toUnit.BaseUnitRelationship.C;
+
+            return new Quantity(magnitudeInToUnit, toUnit);
         }
 
         public Quantity ConvertTo(string unitAsString)
         {
-            var unit = UnitRegistry.GetUnit(unitAsString);
-
-            // Check if dimensions are consistent
-            if (!unit.HasSameDimensionAs(Unit)) throw new Exception();
-
-            throw new NotImplementedException();
+            var toUnit = UnitRegistry.GetUnit(unitAsString);
+            return ConvertTo(toUnit);
         }
 
         public bool TryConvertTo(Unit unit, out Quantity qty)
         {
-            throw new NotImplementedException();
-        }
-
-        public Quantity ToBaseUnit()
-        {
-            throw new NotImplementedException();
+            try
+            {
+                qty = ConvertTo(unit);
+                return true;
+            }
+            catch (Exception)
+            {
+                qty = default;
+                return false;
+            }
         }
 
         public object Clone() => new Quantity(Magnitude, Unit);
 
         public override string ToString() => $"Quantity(value:{Magnitude}, unit:{Unit})";
-
-        #endregion Methods
+        #endregion
 
         #region Operators
         public static Quantity operator *(Quantity quantity, double number)
@@ -79,7 +88,6 @@ namespace UnitService.Library.Models
                 return new Quantity(qty1.Magnitude + qty2.Magnitude, qty1.Unit);
             }
 
-
             // Use unit of left qty1 left hand for now
             return qty1 + qty2.ConvertTo(qty1.Unit);
         }
@@ -92,7 +100,7 @@ namespace UnitService.Library.Models
         public static bool operator ==(Quantity qty1, Quantity qty2) => qty1.Equals(qty2);
 
         public static bool operator !=(Quantity qty1, Quantity qty2) => !(qty1 == qty2);
-        #endregion Operators
+        #endregion
 
         #region Equality
         public bool Equals(Quantity otherQty)
@@ -118,6 +126,6 @@ namespace UnitService.Library.Models
         {
             return HashCode.Combine(Magnitude, Unit);
         }
-        #endregion Equality
+        #endregion
     }
 }
