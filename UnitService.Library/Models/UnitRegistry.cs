@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnitService.Library.Constants;
 
 namespace UnitService.Library.Models
@@ -33,6 +34,11 @@ namespace UnitService.Library.Models
             {
                 throw knfe;
             }
+        }
+
+        public static Unit GetBaseUnit(Dimension dimension)
+        {
+            return units.First(u => u.Value.IsBaseUnit && u.Value.Dimension == dimension).Value;
         }
     }
 }
