@@ -1,13 +1,14 @@
+using UnitService.Library.Constants;
 using UnitService.Library.Models;
 
 namespace UnitService.Test.Models
 {
-    public class Dimensions
+    public class DimensionTest
     {
         [Fact]
         public void Parse_ShouldParseSuccessfully_When_ParsedStringIsCorrect()
         {
-            var dim = Dimension.Parse(@"[Length]/[Time]");
+            var dim = Dimension.Parse(@$"{Dimensions.LENGTH}/{Dimensions.TIME}");
 
             Assert.IsType<Dimension>(dim);
             Assert.True(dim.LengthExp == 1 && dim.TimeExp == -1);
@@ -16,8 +17,26 @@ namespace UnitService.Test.Models
         [Fact]
         public void Parse_ShouldFail_When_ParsedStringContainsUnrecognisedDimension()
         {
-            var ex = Assert.Throws<Exception>(() => Dimension.Parse(@"[Length]/[Fake]"));
+            var ex = Assert.Throws<Exception>(() => Dimension.Parse(@$"{Dimensions.LENGTH}/[Fake]"));
             Assert.Equal("Unregistered dimension specified", ex.Message);
+        }
+
+        [Fact]
+        public void TryParse_ShouldParseSuccessfully_When_ParsedStringIsCorrect()
+        {
+            var isSuccessful = Dimension.TryParse(@$"{Dimensions.LENGTH}/{Dimensions.TIME}", out Dimension dim);
+
+            Assert.True(dim.LengthExp == 1 && dim.TimeExp == -1);
+            Assert.True(isSuccessful);
+        }
+
+        [Fact]
+        public void TryParse_ShouldFailToParse_When_ParsedStringIsIncorrect()
+        {
+            var isSuccessful = Dimension.TryParse(@$"{Dimensions.LENGTH}/[Something]", out Dimension dim);
+
+            Assert.True(dim == default);
+            Assert.False(isSuccessful);
         }
 
         [Theory]
