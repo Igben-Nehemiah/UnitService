@@ -22,12 +22,12 @@ namespace UnitService.Library.Models
         #region Properties and Fields
 
         public double LengthExp, TimeExp, MassExp, CurrentExp, TempExp;
-        public static string NONE = "None";
-        public static string LENGTH = "[Length]";
-        public static string TIME = "[Time]";
-        public static string MASS = "[Mass]";
-        public static string CURRENT = "[Current]";
-        public static string TEMPERATURE = "[Temperature]";
+        private static readonly string NONE = "None";
+        private static readonly string LENGTH = "[Length]";
+        private static readonly string TIME = "[Time]";
+        private static readonly string MASS = "[Mass]";
+        private static readonly string CURRENT = "[Current]";
+        private static readonly string TEMPERATURE = "[Temperature]";
         #endregion
 
         #region Methods
@@ -39,11 +39,11 @@ namespace UnitService.Library.Models
 
             Dictionary<string, double> dimensionDictionary = new Dictionary<string, double>
             {
-                [Dimensions.LENGTH] = 0,
-                [Dimensions.TIME] = 0,
-                [Dimensions.MASS] = 0,
-                [Dimensions.TEMPERATURE] = 0,
-                [Dimensions.CURRENT] = 0,
+                [LENGTH] = 0,
+                [TIME] = 0,
+                [MASS] = 0,
+                [TEMPERATURE] = 0,
+                [CURRENT] = 0,
             };
 
             if (dimensionStr == "1")
@@ -83,11 +83,11 @@ namespace UnitService.Library.Models
                 currentRightSquareBracketIndex = dimensionStr.IndexOf("]", currentRightSquareBracketIndex + 1);
             };
 
-            return new Dimension(lengthExp: dimensionDictionary[Dimensions.LENGTH.ToString()],
-                timeExp: dimensionDictionary[Dimensions.TIME],
-                massExp: dimensionDictionary[Dimensions.MASS],
-                currentExp: dimensionDictionary[Dimensions.CURRENT],
-                tempExp: dimensionDictionary[Dimensions.TEMPERATURE]);
+            return new Dimension(lengthExp: dimensionDictionary[LENGTH],
+                timeExp: dimensionDictionary[TIME],
+                massExp: dimensionDictionary[MASS],
+                currentExp: dimensionDictionary[CURRENT],
+                tempExp: dimensionDictionary[TEMPERATURE]);
 
             static string PadWithSquareBracket(string str) => "[" + str + "]";
             static string StripOffBrackets(string str)
