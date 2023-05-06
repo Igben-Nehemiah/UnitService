@@ -1,4 +1,6 @@
-﻿namespace UnitService.Test.Models
+﻿using UnitService.Library.Models;
+
+namespace UnitService.Test.Models
 {
     public class QuantityTest
     {
@@ -22,7 +24,7 @@
         {
             var meterUnit = UnitRegistry.GetUnit(METER);
             var kilometerUnit = UnitRegistry.GetUnit(KILOMETER);
-            Quantity lengthInMeters = new Quantity(1000, meterUnit);
+            Quantity lengthInMeters = new(1000, meterUnit);
 
             var lengthInKilometers = lengthInMeters.ConvertTo(kilometerUnit);
 
