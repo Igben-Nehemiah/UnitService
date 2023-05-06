@@ -24,6 +24,11 @@ namespace UnitService.Library.Models
             units.Add(name, unit);
         }
 
+        public static bool UnregisterUnit(string name)
+        {
+            return units.Remove(name);
+        }
+
         public static Unit GetUnit(string unitName)
         {
             try
