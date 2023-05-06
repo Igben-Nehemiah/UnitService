@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using UnitService.Library.Constants;
 
 namespace UnitService.Library.Models
 {
@@ -162,15 +161,9 @@ namespace UnitService.Library.Models
                 first.TempExp - second.TempExp);
         }
 
-        public static bool operator ==(Dimension dim1, Dimension dim2)
-        {
-            return dim1.Equals(dim2);
-        }
+        public static bool operator ==(Dimension dim1, Dimension dim2) => dim1.Equals(dim2);
 
-        public static bool operator !=(Dimension dim1, Dimension dim2)
-        {
-            return !(dim1 == dim2);
-        }
+        public static bool operator !=(Dimension dim1, Dimension dim2) => !(dim1 == dim2);
 
         public static implicit operator string(Dimension dimension) => dimension.ToString();
 
