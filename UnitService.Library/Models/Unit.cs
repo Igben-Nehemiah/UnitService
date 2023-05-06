@@ -20,7 +20,7 @@ namespace UnitService.Library.Models
         public string Symbol { get; set; }
         public Dimension Dimension { get; set; }
         public (double M, double C) BaseUnitRelationship { get; }
-        #endregion Properties
+        #endregion
 
         #region Methods
         public bool HasSameDimensionAs(Unit unit) => Dimension == unit.Dimension;
@@ -29,7 +29,7 @@ namespace UnitService.Library.Models
         {
             throw new NotImplementedException();
         }
-        #endregion Methods
+        #endregion
 
         #region Operators
         public static Quantity operator *(double number, Unit unit) => new Quantity(number, unit);
@@ -43,7 +43,7 @@ namespace UnitService.Library.Models
             //return new Unit();
             throw new NotImplementedException();
         }
-        #endregion Operators
+        #endregion
 
         #region Equality
         public bool Equals(Unit other)
@@ -67,6 +67,6 @@ namespace UnitService.Library.Models
         {
             return HashCode.Combine(Name, Symbol, Dimension);
         }
-        #endregion Equality
+        #endregion
     }
 }
