@@ -6,21 +6,21 @@ namespace UnitService.Library.Models
     {
         public Quantity(double? magnitude, Unit unit)
         {
-            CurrentUnit = unit;
+            Unit = unit;
             Magnitude = magnitude;
         }
 
         #region Properties
-        public Unit CurrentUnit { get; set; }
+        public Unit Unit { get; set; }
         public double? Magnitude { get; set; }
-        public Dimension Dimension => CurrentUnit.Dimension;
+        public Dimension Dimension => Unit.Dimension;
         #endregion Properties
 
         #region Methods
         public Quantity ConvertTo(Unit unit)
         {
             // Check if dimensions are consistent
-            if (!CurrentUnit.HasSameDimensionAs(unit)) throw new Exception();
+            if (!Unit.HasSameDimensionAs(unit)) throw new Exception();
 
             throw new NotImplementedException();
         }
@@ -49,9 +49,9 @@ namespace UnitService.Library.Models
             throw new NotImplementedException();
         }
 
-        public object Clone() => new Quantity(Magnitude, CurrentUnit);
+        public object Clone() => new Quantity(Magnitude, Unit);
 
-        public override string ToString() => $"Quantity(value:{Magnitude}, unit:{CurrentUnit})";
+        public override string ToString() => $"Quantity(value:{Magnitude}, unit:{Unit})";
 
         #endregion Methods
 
@@ -59,7 +59,7 @@ namespace UnitService.Library.Models
         public static Quantity operator *(Quantity quantity, double number)
         {
             return new Quantity(quantity.Magnitude.GetValueOrDefault() * number,
-                quantity.CurrentUnit);
+                quantity.Unit);
         }
 
         public static Quantity operator *(double number, Quantity quantity) => quantity * number;
@@ -67,25 +67,25 @@ namespace UnitService.Library.Models
         public static Quantity operator +(Quantity qty1, Quantity qty2)
         {
             // Not possible to add quantities of different dimensions
-            if (!qty1.CurrentUnit.HasSameDimensionAs(qty2.CurrentUnit)) throw new Exception();
+            if (!qty1.Unit.HasSameDimensionAs(qty2.Unit)) throw new Exception();
 
             // Check if the quantities both have valid magnitudes
             if (!qty1.Magnitude.HasValue || !qty2.Magnitude.HasValue) throw new Exception();
 
             // if quantities have the same unit, there is no need for a conversion
-            if (qty1.CurrentUnit == qty2.CurrentUnit)
+            if (qty1.Unit == qty2.Unit)
             {
-                return new Quantity(qty1.Magnitude + qty2.Magnitude, qty1.CurrentUnit);
+                return new Quantity(qty1.Magnitude + qty2.Magnitude, qty1.Unit);
             }
 
 
             // Use unit of left qty1 left hand for now
-            return qty1 + qty2.ConvertTo(qty1.CurrentUnit);
+            return qty1 + qty2.ConvertTo(qty1.Unit);
         }
 
         public static Quantity operator -(Quantity qty)
         {
-            return new Quantity(-qty.Magnitude, qty.CurrentUnit);
+            return new Quantity(-qty.Magnitude, qty.Unit);
         }
 
         public static bool operator ==(Quantity qty1, Quantity qty2) => qty1.Equals(qty2);
@@ -100,7 +100,7 @@ namespace UnitService.Library.Models
 
             return Magnitude.Value == otherQty.Magnitude.Value &&
                 Dimension == otherQty.Dimension &&
-                CurrentUnit == otherQty.CurrentUnit;
+                Unit == otherQty.Unit;
         }
 
         public override bool Equals(object obj)
@@ -115,7 +115,7 @@ namespace UnitService.Library.Models
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(Magnitude, CurrentUnit);
+            return HashCode.Combine(Magnitude, Unit);
         }
         #endregion Equality
     }
