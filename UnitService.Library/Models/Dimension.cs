@@ -81,6 +81,7 @@ namespace UnitService.Library.Models
                 tempExp: dimensionDictionary[Dimensions.TEMPERATURE]);
 
             static string PadWithSquareBracket(string str) => "[" + str + "]";
+
             static string StripOffBrackets(string str)
             {
                 if (string.IsNullOrEmpty(str)) return str;
@@ -102,6 +103,7 @@ namespace UnitService.Library.Models
             var denominator = parts.Length > 1 ? _ParseLiteral(parts[1]) : default;
 
             return numerator/denominator;
+             
         }
 
         public static bool TryParse(string dimString, out Dimension dim)
@@ -203,11 +205,11 @@ namespace UnitService.Library.Models
 
         public override string ToString()
         {
-            string dim = LengthExp != 0 ? Dimensions.LENGTH + (LengthExp == 1 ? "" : "^" + LengthExp) : "";
-            dim += TimeExp != 0 ? Dimensions.TIME + (TimeExp == 1 ? "" : "^" + TimeExp) : "";
-            dim += MassExp != 0 ? Dimensions.MASS + (MassExp == 1 ? "" : "^" + MassExp) : "";
-            dim += CurrentExp != 0 ? Dimensions.CURRENT + (CurrentExp == 1 ? "" : "^" + CurrentExp) : "";
-            dim += TempExp != 0 ? Dimensions.TEMPERATURE + (TempExp == 1 ? "" : "^" + TempExp) : "";
+            string dim = LengthExp != 0 ? "" + (LengthExp == 1 ? Dimensions.LENGTH + "" : "/" + Dimensions.LENGTH) : "";
+            dim += TimeExp != 0 ? "" + (TimeExp == 1 ? Dimensions.TIME + "" : "/" + Dimensions.TIME) : "";
+            dim += MassExp != 0 ? "" + (MassExp == 1 ? Dimensions.MASS + "" : "/" + Dimensions.MASS) : "";
+            dim += CurrentExp != 0 ? "" + (CurrentExp == 1 ? Dimensions.CURRENT + "" : "/" + Dimensions.CURRENT) : "";
+            dim += TempExp != 0 ? "" + (TempExp == 1 ? Dimensions.TEMPERATURE + "" : "^" + Dimensions.TEMPERATURE) : "";
 
             return dim;
         }
