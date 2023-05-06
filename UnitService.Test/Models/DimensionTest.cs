@@ -8,7 +8,7 @@ namespace UnitService.Test.Models
         [Fact]
         public void Parse_ShouldParseSuccessfully_When_ParsedStringIsCorrect()
         {
-            Dimension dim = $"{Dimension.LENGTH}/{Dimension.TIME}";
+            Dimension dim = $"{Dimensions.LENGTH}/{Dimensions.TIME}";
             string dimAsString = dim;
 
             Assert.True(dim.LengthExp == 1 
