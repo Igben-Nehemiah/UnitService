@@ -9,6 +9,7 @@ namespace UnitService.Test.Models
         public void Parse_ShouldParseSuccessfully_When_ParsedStringIsCorrect()
         {
             Dimension dim = $"{Dimensions.LENGTH}/{Dimensions.TIME}";
+
             string dimAsString = dim;
 
             Assert.True(dim.LengthExp == 1 
@@ -24,6 +25,20 @@ namespace UnitService.Test.Models
         {
             var ex = Assert.Throws<Exception>(() => Dimension.Parse(@$"{Dimensions.LENGTH}/[Fake]"));
             Assert.Equal("Unregistered dimension specified", ex.Message);
+        }
+
+        [Fact]
+        public void ToString_ShouldReturnStringRepresentationOfDimensionThatCanBeParsedIntoDimension()
+        {
+            string dimensionAsString = $@"{Dimensions.LENGTH}/{Dimensions.TIME * Dimensions.TIME}";
+
+            Dimension dimension = dimensionAsString;
+
+            Assert.True(dimension.LengthExp == 1
+                && dimension.TimeExp == -2
+                && dimension.MassExp == 0
+                && dimension.TempExp == 0
+                && dimension.CurrentExp == 0);
         }
 
         [Fact]
