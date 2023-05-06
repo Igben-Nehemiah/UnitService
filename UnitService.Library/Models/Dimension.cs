@@ -6,8 +6,6 @@ namespace UnitService.Library.Models
 {
     public struct Dimension
     {
-        public double LengthExp, TimeExp, MassExp, CurrentExp, TempExp;
-
         public Dimension(double lengthExp, 
             double timeExp, 
             double massExp, 
@@ -21,7 +19,18 @@ namespace UnitService.Library.Models
             TempExp = tempExp;
         }
 
+        #region Properties and Fields
 
+        public double LengthExp, TimeExp, MassExp, CurrentExp, TempExp;
+        public static string NONE = "None";
+        public static string LENGTH = "[Length]";
+        public static string TIME = "[Time]";
+        public static string MASS = "[Mass]";
+        public static string CURRENT = "[Current]";
+        public static string TEMPERATURE = "[Temperature]";
+        #endregion
+
+        #region Methods
         private static Dimension ParseLiteral(string dimensionStr)
         {
             dimensionStr = dimensionStr.Trim();
@@ -30,11 +39,11 @@ namespace UnitService.Library.Models
 
             Dictionary<string, double> dimensionDictionary = new Dictionary<string, double>
             {
-                [Dimensions.LENGTH] = 0,
-                [Dimensions.TIME] = 0,
-                [Dimensions.MASS] = 0,
-                [Dimensions.TEMPERATURE] = 0,
-                [Dimensions.CURRENT] = 0,
+                [Dimensions.LENGTH.ToString()] = 0,
+                [Dimensions.TIME.ToString()] = 0,
+                [Dimensions.MASS.ToString()] = 0,
+                [Dimensions.TEMPERATURE.ToString()] = 0,
+                [Dimensions.CURRENT.ToString()] = 0,
             };
 
             if (dimensionStr == "1")
@@ -74,11 +83,11 @@ namespace UnitService.Library.Models
                 currentRightSquareBracketIndex = dimensionStr.IndexOf("]", currentRightSquareBracketIndex + 1);
             };
 
-            return new Dimension(lengthExp: dimensionDictionary[Dimensions.LENGTH],
-                timeExp: dimensionDictionary[Dimensions.TIME],
-                massExp: dimensionDictionary[Dimensions.MASS],
-                currentExp: dimensionDictionary[Dimensions.CURRENT],
-                tempExp: dimensionDictionary[Dimensions.TEMPERATURE]);
+            return new Dimension(lengthExp: dimensionDictionary[Dimensions.LENGTH.ToString()],
+                timeExp: dimensionDictionary[Dimensions.TIME.ToString()],
+                massExp: dimensionDictionary[Dimensions.MASS.ToString()],
+                currentExp: dimensionDictionary[Dimensions.CURRENT.ToString()],
+                tempExp: dimensionDictionary[Dimensions.TEMPERATURE.ToString()]);
 
             static string PadWithSquareBracket(string str) => "[" + str + "]";
             static string StripOffBrackets(string str)
@@ -130,6 +139,7 @@ namespace UnitService.Library.Models
             currentExp = CurrentExp;
             tempExp = TempExp;
         }
+        #endregion
 
         #region Operators
         public static Dimension operator *(Dimension first, Dimension second)
@@ -162,17 +172,12 @@ namespace UnitService.Library.Models
             return !(dim1 == dim2);
         }
 
-        public static implicit operator string(Dimension d)
-        {
-            return string.Empty;
-        }
+        public static implicit operator string(Dimension dimension) => dimension.ToString();
 
-        public static explicit operator Dimension(string dimensionString)
-        {
-            return new Dimension();
-        }
+        public static implicit operator Dimension(string dimensionString) => Parse(dimensionString);
 
-        public static implicit operator (double LengthExp, double TimeExp, double MassExp, double CurrentExp, double TempExp)(Dimension value)
+        public static implicit operator (double LengthExp, double TimeExp, double MassExp, double CurrentExp, double TempExp)
+            (Dimension value)
         {
             return (value.LengthExp, value.TimeExp, value.MassExp, value.CurrentExp, value.TempExp);
         }
@@ -181,7 +186,6 @@ namespace UnitService.Library.Models
         {
             return new Dimension(value.LengthExp, value.TimeExp, value.MassExp, value.CurrentExp, value.TempExp);
         }
-
         #endregion
 
         #region Equality
@@ -203,11 +207,13 @@ namespace UnitService.Library.Models
 
         public override string ToString()
         {
-            string dim = LengthExp != 0 ? Dimensions.LENGTH + (LengthExp == 1 ? "" : "^" + LengthExp) : "";
-            dim += TimeExp != 0 ? Dimensions.TIME + (TimeExp == 1 ? "" : "^" + TimeExp) : "";
-            dim += MassExp != 0 ? Dimensions.MASS + (MassExp == 1 ? "" : "^" + MassExp) : "";
-            dim += CurrentExp != 0 ? Dimensions.CURRENT + (CurrentExp == 1 ? "" : "^" + CurrentExp) : "";
-            dim += TempExp != 0 ? Dimensions.TEMPERATURE + (TempExp == 1 ? "" : "^" + TempExp) : "";
+            if (this == (0, 0, 0, 0, 0)) return NONE;
+
+            string dim = LengthExp != 0 ? LENGTH + (LengthExp == 1 ? "" : "^" + LengthExp) : "";
+            dim += TimeExp != 0 ? TIME + (TimeExp == 1 ? "" : "^" + TimeExp) : "";
+            dim += MassExp != 0 ? MASS + (MassExp == 1 ? "" : "^" + MassExp) : "";
+            dim += CurrentExp != 0 ? CURRENT + (CurrentExp == 1 ? "" : "^" + CurrentExp) : "";
+            dim += TempExp != 0 ? TEMPERATURE + (TempExp == 1 ? "" : "^" + TempExp) : "";
 
             return dim;
         }
