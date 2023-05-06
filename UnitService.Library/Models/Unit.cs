@@ -4,17 +4,22 @@ namespace UnitService.Library.Models
 {
     public struct Unit : IEquatable<Unit>
     {
-        public Unit(string name, string symbol, Dimension dimension = default)
+        public Unit(string name, 
+            string symbol,
+            (double M, double C) baseUnitRelationship = default,
+            Dimension dimension = default)
         {
             Name = name;
             Symbol = symbol;
-            Dimension = dimension;    
+            Dimension = dimension;
+            BaseUnitRelationship = baseUnitRelationship;
         }
 
         #region Properties
         public string Name { get; set; }
         public string Symbol { get; set; }
         public Dimension Dimension { get; set; }
+        public (double M, double C) BaseUnitRelationship { get; }
         #endregion Properties
 
         #region Methods
