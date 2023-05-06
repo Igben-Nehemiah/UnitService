@@ -8,10 +8,15 @@ namespace UnitService.Test.Models
         [Fact]
         public void Parse_ShouldParseSuccessfully_When_ParsedStringIsCorrect()
         {
-            var dim = Dimension.Parse(@$"{Dimensions.LENGTH}/{Dimensions.TIME}");
+            Dimension dim = $"{Dimension.LENGTH}/{Dimension.TIME}";
+            string dimAsString = dim;
 
-            Assert.IsType<Dimension>(dim);
-            Assert.True(dim.LengthExp == 1 && dim.TimeExp == -1);
+            Assert.True(dim.LengthExp == 1 
+                && dim.TimeExp == -1
+                && dim.MassExp == 0
+                && dim.TempExp == 0
+                && dim.CurrentExp == 0);
+            Assert.True(dimAsString == Dimensions.LENGTH/Dimensions.TIME);
         }
 
         [Fact]
@@ -24,7 +29,7 @@ namespace UnitService.Test.Models
         [Fact]
         public void TryParse_ShouldParseSuccessfully_When_ParsedStringIsCorrect()
         {
-            var isSuccessful = Dimension.TryParse(@$"{Dimensions.LENGTH}/{Dimensions.TIME}", out Dimension dim);
+            var isSuccessful = Dimension.TryParse(Dimensions.LENGTH/Dimensions.TIME, out Dimension dim);
 
             Assert.True(dim.LengthExp == 1 && dim.TimeExp == -1);
             Assert.True(isSuccessful);
