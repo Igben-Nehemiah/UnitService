@@ -39,11 +39,11 @@ namespace UnitService.Library.Models
 
             Dictionary<string, double> dimensionDictionary = new Dictionary<string, double>
             {
-                [Dimensions.LENGTH.ToString()] = 0,
-                [Dimensions.TIME.ToString()] = 0,
-                [Dimensions.MASS.ToString()] = 0,
-                [Dimensions.TEMPERATURE.ToString()] = 0,
-                [Dimensions.CURRENT.ToString()] = 0,
+                [Dimensions.LENGTH] = 0,
+                [Dimensions.TIME] = 0,
+                [Dimensions.MASS] = 0,
+                [Dimensions.TEMPERATURE] = 0,
+                [Dimensions.CURRENT] = 0,
             };
 
             if (dimensionStr == "1")
@@ -84,10 +84,10 @@ namespace UnitService.Library.Models
             };
 
             return new Dimension(lengthExp: dimensionDictionary[Dimensions.LENGTH.ToString()],
-                timeExp: dimensionDictionary[Dimensions.TIME.ToString()],
-                massExp: dimensionDictionary[Dimensions.MASS.ToString()],
-                currentExp: dimensionDictionary[Dimensions.CURRENT.ToString()],
-                tempExp: dimensionDictionary[Dimensions.TEMPERATURE.ToString()]);
+                timeExp: dimensionDictionary[Dimensions.TIME],
+                massExp: dimensionDictionary[Dimensions.MASS],
+                currentExp: dimensionDictionary[Dimensions.CURRENT],
+                tempExp: dimensionDictionary[Dimensions.TEMPERATURE]);
 
             static string PadWithSquareBracket(string str) => "[" + str + "]";
             static string StripOffBrackets(string str)
