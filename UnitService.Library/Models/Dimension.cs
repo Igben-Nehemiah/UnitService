@@ -22,7 +22,7 @@ namespace UnitService.Library.Models
         }
 
 
-        private static Dimension _ParseLiteral(string dimensionStr)
+        private static Dimension ParseLiteral(string dimensionStr)
         {
             dimensionStr = dimensionStr.Trim();
             if (string.IsNullOrEmpty(dimensionStr)) // Check later
@@ -97,9 +97,9 @@ namespace UnitService.Library.Models
         {
             string[] parts = dim.Split('/');
 
-            var numerator = _ParseLiteral(parts[0]);
+            var numerator = ParseLiteral(parts[0]);
 
-            var denominator = parts.Length > 1 ? _ParseLiteral(parts[1]) : default;
+            var denominator = parts.Length > 1 ? ParseLiteral(parts[1]) : default;
 
             return numerator/denominator;
         }
