@@ -24,11 +24,6 @@ namespace UnitService.Library.Models
 
         #region Methods
         public bool HasSameDimensionAs(Unit unit) => Dimension == unit.Dimension;
-
-        public static bool TryParse(string unitAsString, out Unit unit)
-        {
-            throw new NotImplementedException();
-        }
         #endregion
 
         #region Operators
