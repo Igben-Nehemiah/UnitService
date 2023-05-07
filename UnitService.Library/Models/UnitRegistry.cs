@@ -16,14 +16,16 @@ namespace UnitService.Library.Models
             _opts = new UnitRegistryOptions();
 
             //TODO: This should be read from a file and generated automatically
-            units.Add("METER", new Unit("METER", "m", (1, 0), Dimensions.LENGTH));
-            units.Add("KILOMETER", new Unit("KILOMETER", "km", (0.001, 0), Dimensions.LENGTH));
-            units.Add("SECOND", new Unit("SECOND", "s", (1, 0), Dimensions.TIME));
-            units.Add("METER_PER_SECOND", new Unit("METER_PER_SECOND", "m/s", (1, 0), Dimensions.LENGTH));
-            units.Add("KILOMETER_PER_SECOND", new Unit("KILOMETER_PER_SECOND", "km/s", (0.001, 0), Dimensions.SPEED));
-            units.Add("KILOMETER_PER_HOUR", new Unit("KILOMETER_PER_HOUR", "km/h", (0.277778, 0), Dimensions.SPEED));
-            units.Add("KELVIN", new Unit("KELVIN", "K", (1, 0), Dimensions.TEMPERATURE));
-            units.Add("CELCIUS", new Unit("CELCIUS", "°C", (1, 273), Dimensions.TEMPERATURE));
+            //units.Add("METER", new Unit("METER", "m", (1, 0), Dimensions.LENGTH));
+            //units.Add("KILOMETER", new Unit("KILOMETER", "km", (0.001, 0), Dimensions.LENGTH));
+            //units.Add("SECOND", new Unit("SECOND", "s", (1, 0), Dimensions.TIME));
+            //units.Add("MINUTE", new Unit("MINUTE", "min", (1/60d, 0), Dimensions.TIME));
+            //units.Add("HOUR", new Unit("HOUR", "hr", (1/3600d, 0), Dimensions.TIME));
+            //units.Add("METER_PER_SECOND", new Unit("METER_PER_SECOND", "m/s", (1, 0), Dimensions.LENGTH));
+            //units.Add("KILOMETER_PER_SECOND", new Unit("KILOMETER_PER_SECOND", "km/s", (0.001, 0), Dimensions.SPEED));
+            //units.Add("KILOMETER_PER_HOUR", new Unit("KILOMETER_PER_HOUR", "km/hr", (0.277778, 0), Dimensions.SPEED));
+            //units.Add("KELVIN", new Unit("KELVIN", "K", (1, 0), Dimensions.TEMPERATURE));
+            //units.Add("CELCIUS", new Unit("CELCIUS", "°C", (1, -273.15), Dimensions.TEMPERATURE));
         }
         public static void RegisterUnit(string name, Unit unit)
         {
