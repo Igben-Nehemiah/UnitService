@@ -4,7 +4,6 @@
     {
         private readonly string METER = "METER";
 
-        // Tear down logic
         public void Dispose() => UnitRegistry.UnregisterUnit(METER);
 
         [Fact]
