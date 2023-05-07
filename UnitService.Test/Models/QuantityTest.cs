@@ -6,6 +6,7 @@ namespace UnitService.Test.Models
     {
         private readonly string METER = "METER";
         private readonly string KILOMETER = "KILOMETER";
+        private readonly string SECOND = "SECOND";
 
         [Fact]
         public void WhenConvertToBaseUnitIsCalledOnNonBaseUnit_ShouldPerformConversion()
@@ -31,6 +32,35 @@ namespace UnitService.Test.Models
             Assert.True(lengthInKilometers.Magnitude == 1 &&
                 lengthInKilometers.Unit == kilometerUnit);
 
+        }
+
+        [Fact]
+        public void WhenQuantitiesSameDimensionsAreAdded_ShouldAddQuantitiesAndTakeUnitOfLeftQuantity()
+        {
+            var meterLengthUnit = UnitRegistry.GetUnit(METER);
+            var kilometerLengthUnit = UnitRegistry.GetUnit(KILOMETER);
+            Quantity lengthInMeters = new(1000, meterLengthUnit);
+            Quantity lengthInKilometers = new(1, kilometerLengthUnit);
+
+            var lengthResultInMeters = lengthInMeters + lengthInKilometers;
+            var lengthResultInKilometers = lengthInKilometers + lengthInMeters;
+
+            Assert.True(lengthResultInMeters.Unit == lengthInMeters.Unit);
+            Assert.True(lengthResultInMeters.Magnitude == 2000);
+
+            Assert.True(lengthResultInKilometers.Unit == lengthInKilometers.Unit);
+            Assert.True(lengthResultInKilometers.Magnitude == 2);
+        }
+
+        [Fact]
+        public void WhenQuantitiesOfDifferentDimensionsAreAdded_ShouldRaiseAnException()
+        {
+            var lengthUnit = UnitRegistry.GetUnit(METER);
+            var timeUnit = UnitRegistry.GetUnit(SECOND);
+            Quantity lengthInMeters = new(1000, lengthUnit);
+            Quantity timeInSeconds = new(10, timeUnit);
+
+            Assert.Throws<Exception>(() => lengthInMeters + timeInSeconds);
         }
     }
 }
