@@ -1,12 +1,12 @@
-﻿using UnitService.Library.Models;
-
-namespace UnitService.Test.Models
+﻿namespace UnitService.Test.Models
 {
-    public class QuantityTest
+    public class QuantityTest : IDisposable
     {
         private readonly string METER = "METER";
         private readonly string KILOMETER = "KILOMETER";
         private readonly string SECOND = "SECOND";
+
+        public QuantityTest() => UnitRegistryTestHelper.RegisterUnitsForTesting();
 
         [Fact]
         public void WhenConvertToBaseUnitIsCalledOnNonBaseUnit_ShouldPerformConversion()
@@ -20,17 +20,28 @@ namespace UnitService.Test.Models
                 lengthInBaseUnit.Unit == UnitRegistry.GetBaseUnit(kilometerUnit.Dimension));
         }
 
-        [Fact]
-        public void WhenConvertToIsCalledWithValidUnit_ShouldPerformConversion()
+        [Theory]
+        [InlineData("METER", "KILOMETER", 1.0d, 0.001d)]
+        [InlineData("KILOMETER", "METER", 1.0d, 1000d)]
+        [InlineData("SECOND", "HOUR", 1.0d, 1/3600d)]
+        [InlineData("HOUR", "SECOND", 1.0d, 3600d)]
+        [InlineData("SECOND", "MINUTE", 1.0d, 1/60d)]
+        [InlineData("MINUTE", "SECOND", 1.0d, 60d)]
+        [InlineData("KELVIN", "CELCIUS", 273.15d, 0d)]
+        [InlineData("CELCIUS", "KELVIN", 100d, 373.15d)]
+        public void WhenConvertToIsCalledWithValidUnit_ShouldPerformConversion(string fromUnitStr,
+            string toUnitStr,
+            double fromValue,
+            double expectedResult)
         {
-            var meterUnit = UnitRegistry.GetUnit(METER);
-            var kilometerUnit = UnitRegistry.GetUnit(KILOMETER);
-            Quantity lengthInMeters = new(1000, meterUnit);
+            var fromUnit = UnitRegistry.GetUnit(fromUnitStr);
+            var toUnit = UnitRegistry.GetUnit(toUnitStr);
+            Quantity quantityInFromUnit = new(fromValue, fromUnit);
 
-            var lengthInKilometers = lengthInMeters.ConvertTo(kilometerUnit);
+            var quantityInToUnit = quantityInFromUnit.ConvertTo(toUnit);
 
-            Assert.True(lengthInKilometers.Magnitude == 1 &&
-                lengthInKilometers.Unit == kilometerUnit);
+            Assert.True(Math.Abs(quantityInToUnit.Magnitude!.Value - expectedResult) < 1e-5  &&
+                quantityInToUnit.Unit == toUnit);
 
         }
 
@@ -105,5 +116,7 @@ namespace UnitService.Test.Models
 
             Assert.True(result == lengthInMeters.Magnitude);
         }
+
+        public void Dispose() => UnitRegistryTestHelper.UnregisterUnitsForTesting();
     }
 }
