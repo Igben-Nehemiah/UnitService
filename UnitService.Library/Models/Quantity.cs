@@ -102,6 +102,11 @@ namespace UnitService.Library.Models
         public static bool operator ==(Quantity qty1, Quantity qty2) => qty1.Equals(qty2);
 
         public static bool operator !=(Quantity qty1, Quantity qty2) => !(qty1 == qty2);
+
+        public static implicit operator double(Quantity quantity)
+        {
+            return quantity.Magnitude.GetValueOrDefault();
+        }
         #endregion
 
         #region Equality
