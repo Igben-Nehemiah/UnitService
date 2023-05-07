@@ -21,6 +21,7 @@ namespace UnitService.Library.Models
         }
         public static void RegisterUnit(string name, Unit unit)
         {
+            if (units.ContainsKey(name)) return;
             units.Add(name, unit);
         }
 
