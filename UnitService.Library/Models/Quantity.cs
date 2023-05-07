@@ -34,6 +34,8 @@ namespace UnitService.Library.Models
 
             var quantityInBaseUnit = ConvertToBaseUnit();
 
+            if (toUnit.IsBaseUnit) return quantityInBaseUnit;
+
             var magnitudeInToUnit = toUnit.BaseUnitRelationship.M * quantityInBaseUnit.Magnitude +
                 toUnit.BaseUnitRelationship.C;
 
