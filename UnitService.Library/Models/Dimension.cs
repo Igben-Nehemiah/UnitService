@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace UnitService.Library.Models
 {
-    public struct Dimension
+    public struct Dimension : IEquatable<Dimension>
     {
         public Dimension(double lengthExp, 
             double timeExp, 
@@ -184,8 +184,20 @@ namespace UnitService.Library.Models
         #region Equality
         public override bool Equals(object? obj)
         {
-            return obj is Dimension other &&
-                   LengthExp == other.LengthExp &&
+            if ((obj == null) || !this.GetType().Equals(obj.GetType()))
+            {
+                return false;
+            }
+            else
+            {
+                Dimension d = (Dimension)obj;
+                return Equals(d);
+            }
+        }
+
+        public bool Equals(Dimension other)
+        {
+            return LengthExp == other.LengthExp &&
                    TimeExp == other.TimeExp &&
                    MassExp == other.MassExp &&
                    CurrentExp == other.CurrentExp &&

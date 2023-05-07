@@ -1,12 +1,10 @@
 name: Build and Test Pull Request (PR)
 
 on:
-  push:
-    branches:
-    - main
   pull_request:
     branches:
     - main
+    - dev
 
 env:
   DOTNET_VERSION: '7.0.x' 
