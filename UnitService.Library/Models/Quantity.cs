@@ -62,7 +62,7 @@ namespace UnitService.Library.Models
 
         public object Clone() => new Quantity(Magnitude, Unit);
 
-        public override string ToString() => $"Quantity(value:{Magnitude}, unit:{Unit})";
+        public override string ToString() => $"{Magnitude} {Unit.Symbol}";
         #endregion
 
         #region Operators
@@ -96,6 +96,8 @@ namespace UnitService.Library.Models
         {
             return new Quantity(-qty.Magnitude, qty.Unit);
         }
+
+        public static Quantity operator -(Quantity qty1, Quantity qty2) => qty1 + (-qty2);
 
         public static bool operator ==(Quantity qty1, Quantity qty2) => qty1.Equals(qty2);
 

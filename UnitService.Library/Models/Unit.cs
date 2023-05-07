@@ -25,6 +25,7 @@ namespace UnitService.Library.Models
 
         #region Methods
         public bool HasSameDimensionAs(Unit unit) => Dimension == unit.Dimension;
+        public override string ToString() => Symbol;
         #endregion
 
         #region Operators
