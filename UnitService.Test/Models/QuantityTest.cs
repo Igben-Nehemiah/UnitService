@@ -35,7 +35,7 @@ namespace UnitService.Test.Models
         }
 
         [Fact]
-        public void WhenQuantitiesSameDimensionsAreAdded_ShouldAddQuantitiesAndTakeUnitOfLeftQuantity()
+        public void WhenQuantitiesWithSameDimensionsAreAdded_ShouldAddQuantitiesAndTakeUnitOfLeftQuantity()
         {
             var meterLengthUnit = UnitRegistry.GetUnit(METER);
             var kilometerLengthUnit = UnitRegistry.GetUnit(KILOMETER);
@@ -50,6 +50,24 @@ namespace UnitService.Test.Models
 
             Assert.True(lengthResultInKilometers.Unit == lengthInKilometers.Unit);
             Assert.True(lengthResultInKilometers.Magnitude == 2);
+        }
+
+        [Fact]
+        public void WhenQuantitiesWithSameDimensionsAreSubtracted_ShouldPerformSubtractionAndTakeUnitOfLeftQuantity()
+        {
+            var meterLengthUnit = UnitRegistry.GetUnit(METER);
+            var kilometerLengthUnit = UnitRegistry.GetUnit(KILOMETER);
+            Quantity lengthInMeters = new(1000, meterLengthUnit);
+            Quantity lengthInKilometers = new(1, kilometerLengthUnit);
+
+            var lengthResultInMeters = lengthInMeters - lengthInKilometers;
+            var lengthResultInKilometers = lengthInKilometers - lengthInMeters;
+
+            Assert.True(lengthResultInMeters.Unit == lengthInMeters.Unit);
+            Assert.True(lengthResultInMeters.Magnitude == 0);
+
+            Assert.True(lengthResultInKilometers.Unit == lengthInKilometers.Unit);
+            Assert.True(lengthResultInKilometers.Magnitude == 0);
         }
 
         [Fact]
