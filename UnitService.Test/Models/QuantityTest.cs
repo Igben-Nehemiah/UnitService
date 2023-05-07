@@ -80,5 +80,30 @@ namespace UnitService.Test.Models
 
             Assert.Throws<Exception>(() => lengthInMeters + timeInSeconds);
         }
+
+        [Fact]
+        public void WhenImplicitCastOfQuantityToDouble_ShouldStoreQuantityMagnitudeInDouble()
+        {
+            var lengthUnit = UnitRegistry.GetUnit(METER);
+            Quantity lengthInMeters = new(1000, lengthUnit);
+            double lengthMaginitude = lengthInMeters;
+
+            Assert.True(lengthMaginitude == lengthInMeters.Magnitude);
+        }
+
+        [Theory]
+        [InlineData(1000, 4, 4000)]
+        [InlineData(1000, 1, 1000)]
+        [InlineData(1000, 0.2, 200)]
+        [InlineData(1000, 0.0, 0)]
+        public void WhenQuantitiesAreMultipliedWithAConstant_ShouldMultiplyTheMagnitudeOfQuantityByConstant(double length, 
+            double constant, 
+            double result)
+        {
+            var lengthUnit = UnitRegistry.GetUnit(METER);
+            Quantity lengthInMeters = constant * new Quantity(length, lengthUnit);
+
+            Assert.True(result == lengthInMeters.Magnitude);
+        }
     }
 }
