@@ -4,15 +4,15 @@
     {
         private readonly string METER = "METER";
 
-        public void Dispose() => UnitRegistry.UnregisterUnit(METER);
+        public UnitRegistryTest() => UnitRegistryTestHelper.RegisterUnitsForTesting();
 
         [Fact]
         public void WhenRegisterUnitIsCalled_ShouldRegisterUnit()
         {
             var meterUnit = new Unit($"__{METER}__", "m", (1, 0), Dimensions.LENGTH);
-            UnitRegistry.RegisterUnit(METER, meterUnit);
+            UnitRegistry.RegisterUnit($"__{METER}__", meterUnit);
 
-            Assert.True(UnitRegistry.GetUnit(METER) == meterUnit);
+            Assert.True(UnitRegistry.GetUnit($"__{METER}__") == meterUnit);
         }
 
         [Fact]
@@ -32,5 +32,7 @@
 
             Assert.False(successful);
         }
+
+        public void Dispose() => UnitRegistryTestHelper.UnregisterUnitsForTesting();
     }
 }
