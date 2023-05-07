@@ -1,10 +1,10 @@
-﻿namespace UnitService.Test.Models
-{
-    public class UnitRegistryTest : IDisposable
-    {
-        private readonly string METER = "METER";
+﻿using UnitService.Test.Fixtures;
 
-        public UnitRegistryTest() => UnitRegistryTestHelper.RegisterUnitsForTesting();
+namespace UnitService.Test.Models
+{
+    public class UnitRegistryTest
+    { 
+        private readonly string METER = "METER";
 
         [Fact]
         public void WhenRegisterUnitIsCalled_ShouldRegisterUnit()
@@ -32,7 +32,5 @@
 
             Assert.False(successful);
         }
-
-        public void Dispose() => UnitRegistryTestHelper.UnregisterUnitsForTesting();
     }
 }
