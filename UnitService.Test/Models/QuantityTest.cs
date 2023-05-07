@@ -1,12 +1,13 @@
-﻿namespace UnitService.Test.Models
+﻿using UnitService.Test.Fixtures;
+
+namespace UnitService.Test.Models
 {
-    public class QuantityTest : IDisposable
+    public class QuantityTest : IClassFixture<QuantityFixture>
     {
         private readonly string METER = "METER";
         private readonly string KILOMETER = "KILOMETER";
         private readonly string SECOND = "SECOND";
 
-        public QuantityTest() => UnitRegistryTestHelper.RegisterUnitsForTesting();
 
         [Fact]
         public void WhenConvertToBaseUnitIsCalledOnNonBaseUnit_ShouldPerformConversion()
@@ -116,7 +117,5 @@
 
             Assert.True(result == lengthInMeters.Magnitude);
         }
-
-        public void Dispose() => UnitRegistryTestHelper.UnregisterUnitsForTesting();
     }
 }
