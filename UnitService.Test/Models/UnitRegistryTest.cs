@@ -5,10 +5,7 @@
         private readonly string METER = "METER";
 
         // Tear down logic
-        public void Dispose()
-        {
-            UnitRegistry.UnregisterUnit(METER);
-        }
+        public void Dispose() => UnitRegistry.UnregisterUnit(METER);
 
         [Fact]
         public void WhenRegisterUnitIsCalled_ShouldRegisterUnit()
@@ -23,7 +20,7 @@
         public void WhenUnregisterUnitIsCalledWithUnitInRegistry_ShouldReturnTrue()
         {
             var meterUnit = new Unit($"__{METER}__", "m", (1, 0), Dimensions.LENGTH);
-            UnitRegistry.RegisterUnit(METER, meterUnit);
+            UnitRegistry.RegisterUnit($"__{METER}__", meterUnit);
             bool successful = UnitRegistry.UnregisterUnit($"__{METER}__");
 
             Assert.True(successful);
