@@ -23,7 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\UnitService.Library\UnitService.Core.csproj" />
+    <ProjectReference Include="..\UnitService.Core\UnitService.Core.csproj" />
   </ItemGroup>
 
 </Project>

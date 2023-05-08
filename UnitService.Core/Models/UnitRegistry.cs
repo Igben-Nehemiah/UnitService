@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using UnitService.Core.Constants;
 
 namespace UnitService.Core.Models
 {
