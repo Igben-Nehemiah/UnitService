@@ -1,4 +1,4 @@
-name: Build and Test
+name: Build, Test and update Documentaion
 
 on:
     pull_request:
@@ -40,3 +40,12 @@ jobs:
               with:
                   name: Test Results
                   path: ./TestResults/*.trx
+
+            - name: Copy XML documentation
+              run: copy UnitService.Library/obj/Release/netstandard2.1/UnitService.Library.xml /docs
+
+            - name: Upload documentation
+              uses: actions/upload-artifact@v2
+              with:
+                  name: documentation
+                  path: /docs
