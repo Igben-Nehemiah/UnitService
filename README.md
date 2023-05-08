@@ -21,9 +21,8 @@ PM> Install-Package UnitService
 To use UnitService, simply add a reference to the library in your C# project and include the appropriate using directive:
 
 ```csharp
-using UnitService.Library;
-using UnitService.Library.Constants;
-using UnitService.Library.Models;
+using UnitService.Core.Constants;
+using UnitService.Core.Models;
 ```
 
 Then, you can use the various classes and methods provided by the library:
