@@ -39,7 +39,7 @@ Quantity distanceInKilometer = distanceInMeter.ConvertTo("KILOMETER");
 
 ## Documentation
 
-For detailed documentation on how to use Library Name, see the [Wiki](https://github.com/username/repo/wiki).
+For detailed documentation on how to use Library Name, see the [Wiki](https://github.com/Igben-Nehemiah/UnitService/wiki).
 
 ## Contributing
 
