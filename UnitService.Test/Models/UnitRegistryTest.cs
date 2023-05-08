@@ -1,4 +1,6 @@
-﻿using UnitService.Test.Fixtures;
+﻿using UnitService.Core.Constants;
+using UnitService.Core.Models;
+using UnitService.Test.Fixtures;
 
 namespace UnitService.Test.Models
 {
