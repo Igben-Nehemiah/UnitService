@@ -8,7 +8,7 @@ on:
 
 env:
     DOTNET_VERSION: "7.0.x"
-    PROJECT_PATH: "UnitService.Library/UnitService.Library.csproj"
+    PROJECT_PATH: "UnitService.Core/UnitService.Core.csproj"
     TEST_PROJECT_PATH: "UnitService.Test/UnitService.Test.csproj"
 
 jobs:
@@ -42,7 +42,7 @@ jobs:
                   path: ./TestResults/*.trx
 
             - name: Copy XML documentation
-              run: copy UnitService.Library/obj/Release/netstandard2.1/UnitService.Library.xml /docs
+              run: copy UnitService.Core/obj/Release/netstandard2.1/UnitService.Core.xml /docs
 
             - name: Upload documentation
               uses: actions/upload-artifact@v2

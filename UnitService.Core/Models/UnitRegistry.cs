@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using UnitService.Library.Constants;
 
-namespace UnitService.Library.Models
+namespace UnitService.Core.Models
 {
     /// <summary>
     /// This is an abstraction fo the units registry.

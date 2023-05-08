@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace UnitService.Library.Models
+namespace UnitService.Core.Models
 {
     /// <summary>
     /// This is an abstraction a Dimension
@@ -16,10 +16,10 @@ namespace UnitService.Library.Models
         /// <param name="massExp"></param>
         /// <param name="currentExp"></param>
         /// <param name="tempExp"></param>
-        public Dimension(double lengthExp, 
-            double timeExp, 
-            double massExp, 
-            double currentExp, 
+        public Dimension(double lengthExp,
+            double timeExp,
+            double massExp,
+            double currentExp,
             double tempExp)
         {
             LengthExp = lengthExp;
@@ -92,7 +92,7 @@ namespace UnitService.Library.Models
                             nextLeftSquareBracketIndex - currentRightSquareBracketIndex - 1).Trim();
 
 
-                    double exponent = string.IsNullOrEmpty(exponentPart) ? 1 
+                    double exponent = string.IsNullOrEmpty(exponentPart) ? 1
                         : double.Parse(StripOffBrackets(exponentPart[1..]));
 
                     dimensionDictionary[dimensionKey] = exponent;
@@ -135,7 +135,7 @@ namespace UnitService.Library.Models
 
             var denominator = parts.Length > 1 ? ParseLiteral(parts[1]) : default;
 
-            return numerator/denominator;
+            return numerator / denominator;
         }
 
         /// <summary>
@@ -170,10 +170,10 @@ namespace UnitService.Library.Models
         /// <param name="massExp"></param>
         /// <param name="currentExp"></param>
         /// <param name="tempExp"></param>
-        public void Deconstruct(out double lengthExp, 
-            out double timeExp, 
-            out double massExp, 
-            out double currentExp, 
+        public void Deconstruct(out double lengthExp,
+            out double timeExp,
+            out double massExp,
+            out double currentExp,
             out double tempExp)
         {
             lengthExp = LengthExp;
@@ -275,7 +275,7 @@ namespace UnitService.Library.Models
         /// <returns>True if objects are equal</returns>
         public override bool Equals(object? obj)
         {
-            if ((obj == null) || !this.GetType().Equals(obj.GetType()))
+            if (obj == null || !GetType().Equals(obj.GetType()))
             {
                 return false;
             }

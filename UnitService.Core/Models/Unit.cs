@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace UnitService.Library.Models
+namespace UnitService.Core.Models
 {
     /// <summary>
     /// An abstraction of a unit.
@@ -14,7 +14,7 @@ namespace UnitService.Library.Models
         /// <param name="symbol"></param>
         /// <param name="baseUnitRelationship"></param>
         /// <param name="dimension"></param>
-        public Unit(string name, 
+        public Unit(string name,
             string symbol,
             (double M, double C) baseUnitRelationship = default,
             Dimension dimension = default)
@@ -64,12 +64,12 @@ namespace UnitService.Library.Models
         #endregion
 
         #region Operators
-       /// <summary>
-       /// Checks if units are the same.
-       /// </summary>
-       /// <param name="unit1"></param>
-       /// <param name="unit2"></param>
-       /// <returns>True if units are the same else false.</returns>
+        /// <summary>
+        /// Checks if units are the same.
+        /// </summary>
+        /// <param name="unit1"></param>
+        /// <param name="unit2"></param>
+        /// <returns>True if units are the same else false.</returns>
         public static bool operator ==(Unit unit1, Unit unit2) => unit1.Equals(unit2);
 
         /// <summary>

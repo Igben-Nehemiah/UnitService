@@ -1,6 +1,6 @@
-﻿using UnitService.Library.Models;
+﻿using UnitService.Core.Models;
 
-namespace UnitService.Library.Constants
+namespace UnitService.Core.Constants
 {
     /// <summary>
     /// A class that holds predefined dimensions
@@ -15,23 +15,23 @@ namespace UnitService.Library.Constants
         /// <summary>
         /// A dimension for length
         /// </summary>
-        public static Dimension LENGTH => new Dimension(lengthExp:1, 0, 0, 0, 0);
+        public static Dimension LENGTH => new Dimension(lengthExp: 1, 0, 0, 0, 0);
         /// <summary>
         /// A dimension for time
         /// </summary>
-        public static Dimension TIME => new Dimension(0, timeExp:1, 0, 0, 0);
+        public static Dimension TIME => new Dimension(0, timeExp: 1, 0, 0, 0);
         /// <summary>
         /// A dimension for mass
         /// </summary>
-        public static Dimension MASS => new Dimension(0, 0, massExp:1, 0, 0);
+        public static Dimension MASS => new Dimension(0, 0, massExp: 1, 0, 0);
         /// <summary>
         /// A dimension for current
         /// </summary>
-        public static Dimension CURRENT => new Dimension(0, 0, 0, currentExp:1, 0);
+        public static Dimension CURRENT => new Dimension(0, 0, 0, currentExp: 1, 0);
         /// <summary>
         /// A dimension for temperature
         /// </summary>
-        public static Dimension TEMPERATURE => new Dimension(0, 0, 0, 0, tempExp:1);
+        public static Dimension TEMPERATURE => new Dimension(0, 0, 0, 0, tempExp: 1);
 
         // DERIVED GROUP
         /// <summary>
