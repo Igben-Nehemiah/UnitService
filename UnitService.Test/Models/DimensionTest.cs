@@ -1,6 +1,3 @@
-using UnitService.Library.Constants;
-using UnitService.Library.Models;
-
 namespace UnitService.Test.Models
 {
     public class DimensionTest

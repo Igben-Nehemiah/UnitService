@@ -1,23 +1,46 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using UnitService.Library.Constants;
 
 namespace UnitService.Library.Models
 {
-    public class UnitRegistry
+    public static class UnitRegistry
     {
-        private readonly UnitRegistryOptions _opts;
+        private static readonly UnitRegistryOptions _opts;
+        private static readonly Dictionary<string, Unit>
+            units = new Dictionary<string, Unit>();
 
-        public UnitRegistry(UnitRegistryOptions opts)
+        static UnitRegistry()
         {
-            _opts = opts;
+            _opts = new UnitRegistryOptions();
         }
-        public void RegisterUnit(string name, Unit unit)
+        public static void RegisterUnit(string name, Unit unit)
         {
-
+            if (units.ContainsKey(name)) return;
+            units.Add(name, unit);
         }
 
-        public Unit GetUnit(string unitName)
+        public static bool UnregisterUnit(string name)
         {
-            throw new NotImplementedException();
+            return units.Remove(name);
+        }
+
+        public static Unit GetUnit(string unitName)
+        {
+            try
+            {
+                return units[unitName];
+            }
+            catch (KeyNotFoundException knfe)
+            {
+                throw knfe;
+            }
+        }
+
+        public static Unit GetBaseUnit(Dimension dimension)
+        {
+            return units.First(u => u.Value.IsBaseUnit && u.Value.Dimension == dimension).Value;
         }
     }
 }

@@ -1,12 +1,10 @@
 name: Build and Test Pull Request (PR)
 
 on:
-  push:
-    branches:
-    - main
   pull_request:
     branches:
     - main
+    - dev
 
 env:
   DOTNET_VERSION: '7.0.x' 
@@ -36,10 +34,10 @@ jobs:
       run: dotnet build ${{env.PROJECT_PATH}} --configuration Release --no-restore
 
     - name: Run unit tests
-      run: dotnet test ${{env.TEST_PROJECT_PATH}} --configuration Release --no-build --logger "trx;LogFileName=test_results.xml" --collect "Code coverage"
+      run: dotnet test --logger "trx;LogFileName=test_results.trx" --results-directory ./TestResults --no-build
 
-    - name: Publish test results
+    - name: Upload Test Results
       uses: actions/upload-artifact@v2
       with:
         name: Test Results
-        path: test_results.xml
+        path: ./TestResults/*.trx
