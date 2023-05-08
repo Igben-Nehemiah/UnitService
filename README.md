@@ -1,6 +1,6 @@
 # UnitService
 
-[![Build Status](https://github.com/Igben-Nehemiah/UnitService/actions/workflows/build-test.yml/badge.svg)](https://github.com/Igben-Nehemiah/UnitService/actions/workflows/pr-check.yml)
+[![Build and Test](https://github.com/Igben-Nehemiah/UnitService/actions/workflows/build-test.yml/badge.svg)](https://github.com/Igben-Nehemiah/UnitService/actions/workflows/build-test.yml)
 
 <!-- [![NuGet](https://img.shields.io/nuget/v/LibName.svg)](https://www.nuget.org/packages/LibName/) -->
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
