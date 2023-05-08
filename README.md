@@ -5,7 +5,7 @@
 <!-- [![NuGet](https://img.shields.io/nuget/v/LibName.svg)](https://www.nuget.org/packages/LibName/) -->
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-This is a C# library that provides useful functionality for unit conversion.
+This is a C# library that provides useful functionalities for unit conversion.
 
 ## Design Philosophy
 
