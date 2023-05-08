@@ -45,8 +45,6 @@ For detailed documentation on how to use Library Name, see the [Wiki](https://gi
 
 Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for more information.
 
-Here's a sample README file for a C# library:
-
 ## License
 
 Library Name is licensed under the MIT License. See [LICENSE](LICENSE) for more information.
