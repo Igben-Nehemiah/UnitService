@@ -42,7 +42,7 @@ jobs:
                   path: ./TestResults/*.trx
 
             - name: Copy XML documentation
-              run: cp UnitService.Library/bin/Release/UnitService.Library.xml docs/
+              run: cp UnitService.Library/bin/Release/netstandard2.1/UnitService.Library.xml docs/
 
             - name: Upload documentation
               uses: actions/upload-artifact@v2
