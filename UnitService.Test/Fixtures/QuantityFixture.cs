@@ -1,4 +1,7 @@
-﻿namespace UnitService.Test.Fixtures
+﻿using UnitService.Core.Constants;
+using UnitService.Core.Models;
+
+namespace UnitService.Test.Fixtures
 {
     public class QuantityFixture : IDisposable, IClassFixture<QuantityFixture>
     {

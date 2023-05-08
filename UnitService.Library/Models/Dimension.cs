@@ -1,25 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace UnitService.Library.Models
+namespace UnitService.Core.Models
 {
-    /// <summary>
-    /// This is an abstraction a Dimension
-    /// </summary>
-    public struct Dimension : IEquatable<Dimension>
+    public struct Dimension
     {
-        /// <summary>
-        /// Creates a Dimension from exponents of fundamental quantities.
-        /// </summary>
-        /// <param name="lengthExp"></param>
-        /// <param name="timeExp"></param>
-        /// <param name="massExp"></param>
-        /// <param name="currentExp"></param>
-        /// <param name="tempExp"></param>
-        public Dimension(double lengthExp, 
-            double timeExp, 
-            double massExp, 
-            double currentExp, 
+        public Dimension(double lengthExp,
+            double timeExp,
+            double massExp,
+            double currentExp,
             double tempExp)
         {
             LengthExp = lengthExp;
@@ -31,9 +20,6 @@ namespace UnitService.Library.Models
 
         #region Properties and Fields
 
-        /// <summary>
-        /// Dimension exponent
-        /// </summary>
         public double LengthExp, TimeExp, MassExp, CurrentExp, TempExp;
         private static readonly string NONE = "None";
         private static readonly string LENGTH = "[Length]";
@@ -44,12 +30,6 @@ namespace UnitService.Library.Models
         #endregion
 
         #region Methods
-        /// <summary>
-        /// Parses a dimension string to a dimension.
-        /// </summary>
-        /// <param name="dimensionStr"></param>
-        /// <returns>The Parsed Dimension</returns>
-        /// <exception cref="Exception"></exception>
         private static Dimension ParseLiteral(string dimensionStr)
         {
             dimensionStr = dimensionStr.Trim();
@@ -92,7 +72,7 @@ namespace UnitService.Library.Models
                             nextLeftSquareBracketIndex - currentRightSquareBracketIndex - 1).Trim();
 
 
-                    double exponent = string.IsNullOrEmpty(exponentPart) ? 1 
+                    double exponent = string.IsNullOrEmpty(exponentPart) ? 1
                         : double.Parse(StripOffBrackets(exponentPart[1..]));
 
                     dimensionDictionary[dimensionKey] = exponent;
@@ -121,12 +101,6 @@ namespace UnitService.Library.Models
             }
         }
 
-        /// <summary>
-        /// This is used to Parse a valid string as a dimension.
-        /// </summary>
-        /// <param name="dim"></param>
-        /// <returns>The Parsed Dimension</returns>
-        /// <exception cref="Exception"></exception>
         public static Dimension Parse(string dim)
         {
             string[] parts = dim.Split('/');
@@ -135,15 +109,9 @@ namespace UnitService.Library.Models
 
             var denominator = parts.Length > 1 ? ParseLiteral(parts[1]) : default;
 
-            return numerator/denominator;
+            return numerator / denominator;
         }
 
-        /// <summary>
-        /// This is used to Parse a valid string as a dimension.
-        /// </summary>
-        /// <param name="dimString"></param>
-        /// <param name="dim"></param>
-        /// <returns>The Parsed Dimension</returns>
         public static bool TryParse(string dimString, out Dimension dim)
         {
             try
@@ -158,22 +126,10 @@ namespace UnitService.Library.Models
             }
         }
 
-        /// <summary>
-        /// This is used for deconstructing a dimension into a tuple.
-        /// <code>
-        /// Example:
-        /// (double lengthExponent, double timeExp, double massExp, double currentExp, double tempExp) = new Dimension();
-        /// </code>
-        /// </summary>
-        /// <param name="lengthExp"></param>
-        /// <param name="timeExp"></param>
-        /// <param name="massExp"></param>
-        /// <param name="currentExp"></param>
-        /// <param name="tempExp"></param>
-        public void Deconstruct(out double lengthExp, 
-            out double timeExp, 
-            out double massExp, 
-            out double currentExp, 
+        public void Deconstruct(out double lengthExp,
+            out double timeExp,
+            out double massExp,
+            out double currentExp,
             out double tempExp)
         {
             lengthExp = LengthExp;
@@ -184,12 +140,6 @@ namespace UnitService.Library.Models
         }
         #endregion
 
-        /// <summary>
-        /// Performs multiplication between dimensions.
-        /// </summary>
-        /// <param name="first"></param>
-        /// <param name="second"></param>
-        /// <returns>The Dimension that is the product of both dimensions</returns>
         #region Operators
         public static Dimension operator *(Dimension first, Dimension second)
         {
@@ -201,12 +151,6 @@ namespace UnitService.Library.Models
                 first.TempExp + second.TempExp);
         }
 
-        /// <summary>
-        /// Performs division between dimensions.
-        /// </summary>
-        /// <param name="first"></param>
-        /// <param name="second"></param>
-        /// <returns>The Dimension that is obtained from the division</returns>
         public static Dimension operator /(Dimension first, Dimension second)
         {
             return (
@@ -217,50 +161,20 @@ namespace UnitService.Library.Models
                 first.TempExp - second.TempExp);
         }
 
-        /// <summary>
-        /// Checks for equality between dimensions.
-        /// </summary>
-        /// <param name="dim1"></param>
-        /// <param name="dim2"></param>
-        /// <returns>True if dimensions are equal else false</returns>
         public static bool operator ==(Dimension dim1, Dimension dim2) => dim1.Equals(dim2);
 
-        /// <summary>
-        /// Checks for non-equality between dimensions.
-        /// </summary>
-        /// <param name="dim1"></param>
-        /// <param name="dim2"></param>
-        /// <returns>Returns true if dimensions are not equal else false</returns>
         public static bool operator !=(Dimension dim1, Dimension dim2) => !(dim1 == dim2);
 
-        /// <summary>
-        /// Converts dimension to string implicitly.
-        /// </summary>
-        /// <param name="dimension"></param>
-        /// <exception cref="Exception"></exception>
         public static implicit operator string(Dimension dimension) => dimension.ToString();
 
-        /// <summary>
-        /// Converts string to dimension implicitly.
-        /// </summary>
-        /// <param name="dimensionString"></param>
-        /// <exception cref="Exception"></exception>
         public static implicit operator Dimension(string dimensionString) => Parse(dimensionString);
 
-        /// <summary>
-        /// Converts dimension to tuple.
-        /// </summary>
-        /// <param name="value"></param>
         public static implicit operator (double LengthExp, double TimeExp, double MassExp, double CurrentExp, double TempExp)
             (Dimension value)
         {
             return (value.LengthExp, value.TimeExp, value.MassExp, value.CurrentExp, value.TempExp);
         }
 
-        /// <summary>
-        /// Converts tuple to dimension.
-        /// </summary>
-        /// <param name="value"></param>
         public static implicit operator Dimension((double LengthExp, double TimeExp, double MassExp, double CurrentExp, double TempExp) value)
         {
             return new Dimension(value.LengthExp, value.TimeExp, value.MassExp, value.CurrentExp, value.TempExp);
@@ -268,52 +182,22 @@ namespace UnitService.Library.Models
         #endregion
 
         #region Equality
-        /// <summary>
-        /// Checks for object equality
-        /// </summary>
-        /// <param name="obj"></param>
-        /// <returns>True if objects are equal</returns>
         public override bool Equals(object? obj)
         {
-            if ((obj == null) || !this.GetType().Equals(obj.GetType()))
-            {
-                return false;
-            }
-            else
-            {
-                Dimension d = (Dimension)obj;
-                return Equals(d);
-            }
-        }
-
-        /// <summary>
-        /// Checks for object equality
-        /// </summary>
-        /// <param name="other"></param>
-        /// <returns>True if objects are equal</returns>
-        public bool Equals(Dimension other)
-        {
-            return LengthExp == other.LengthExp &&
+            return obj is Dimension other &&
+                   LengthExp == other.LengthExp &&
                    TimeExp == other.TimeExp &&
                    MassExp == other.MassExp &&
                    CurrentExp == other.CurrentExp &&
                    TempExp == other.TempExp;
         }
 
-        /// <summary>
-        /// Gets the hashcode of the quantity
-        /// </summary>
-        /// <returns>Number representing the hashcode of the quantity</returns>
         public override int GetHashCode()
         {
             return HashCode.Combine(LengthExp, TimeExp, MassExp, CurrentExp, TempExp);
         }
         #endregion
 
-        /// <summary>
-        /// This is used to get the string representation of a dimension.
-        /// </summary>
-        /// <returns>A string that represents the dimension</returns>
         public override string ToString()
         {
             if (this == (0, 0, 0, 0, 0)) return NONE;

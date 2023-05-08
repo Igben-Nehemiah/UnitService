@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace UnitService.Library.Models
+namespace UnitService.Core.Models
 {
     /// <summary>
     /// An abstraction of a physical quantity
@@ -131,7 +131,7 @@ namespace UnitService.Library.Models
         /// <param name="quantity"></param>
         /// <returns></returns>
         public static Quantity operator *(double number, Quantity quantity) => quantity * number;
-        
+
         /// <summary>
         /// This is used for adding quantities.
         /// </summary>
@@ -173,7 +173,7 @@ namespace UnitService.Library.Models
         /// <param name="qty1"></param>
         /// <param name="qty2"></param>
         /// <returns>A quantity that is the result of the operation</returns>
-        public static Quantity operator -(Quantity qty1, Quantity qty2) => qty1 + (-qty2);
+        public static Quantity operator -(Quantity qty1, Quantity qty2) => qty1 + -qty2;
 
         /// <summary>
         /// This is used for testing equality between quantities.
@@ -225,7 +225,7 @@ namespace UnitService.Library.Models
         {
             if (obj is Quantity q)
             {
-                q.Equals(this); 
+                q.Equals(this);
                 return true;
             }
             return false;
