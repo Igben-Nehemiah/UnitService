@@ -1,3 +1,3 @@
 global using Xunit;
-global using UnitService.Library.Models;
-global using UnitService.Library.Constants;
+global using UnitService.Core.Models;
+global using UnitService.Core.Constants;
