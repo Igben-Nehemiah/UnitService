@@ -15,23 +15,33 @@ namespace UnitService.Core.Constants
         /// <summary>
         /// A dimension for length
         /// </summary>
-        public static Dimension LENGTH => new Dimension(lengthExp: 1, 0, 0, 0, 0);
+        public static Dimension LENGTH => new Dimension(lengthExp: 1);
         /// <summary>
         /// A dimension for time
         /// </summary>
-        public static Dimension TIME => new Dimension(0, timeExp: 1, 0, 0, 0);
+        public static Dimension TIME => new Dimension(timeExp: 1);
         /// <summary>
         /// A dimension for mass
         /// </summary>
-        public static Dimension MASS => new Dimension(0, 0, massExp: 1, 0, 0);
+        public static Dimension MASS => new Dimension(massExp: 1);
         /// <summary>
         /// A dimension for current
         /// </summary>
-        public static Dimension CURRENT => new Dimension(0, 0, 0, currentExp: 1, 0);
+        public static Dimension CURRENT => new Dimension(currentExp: 1);
         /// <summary>
         /// A dimension for temperature
         /// </summary>
-        public static Dimension TEMPERATURE => new Dimension(0, 0, 0, 0, tempExp: 1);
+        public static Dimension TEMPERATURE => new Dimension(tempExp: 1);
+
+        /// <summary>
+        /// A dimension for luminous intensity
+        /// </summary>
+        public static Dimension LUMINOUS_INTENSITY => new Dimension(luminousIntensityExp: 1);
+
+        /// <summary>
+        /// A dimension for amount of substance
+        /// </summary>
+        public static Dimension AMOUNT_OF_SUBSTANCE => new Dimension(amountOfSubstanceExp: 1);
 
         // DERIVED GROUP
         /// <summary>
