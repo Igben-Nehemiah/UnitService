@@ -89,7 +89,7 @@ namespace UnitService.Core.Utils
         /// <summary>
         /// Builds a dimension from preset exponents
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Dimension with exponents same as preset exponents</returns>
         public Dimension Build() => _dimension;
     }
 }
