@@ -38,7 +38,7 @@
 # [dimension name] = <relation to other dimensions>
 #
 # Example:
-#     [Density] = [mass] / [Volume]
+#     [Density] = [Mass] / [Volume]
 #
 # Note that primary dimensions don't need to be declared; they can be
 # defined for the first Time in a unit definition.
@@ -50,7 +50,7 @@ meter = [Length] = m = metre
 second = [Time] = s = sec
 ampere = [Current] = A = amp
 candela = [Luminosity] = cd = candle
-gram = [mass] = g
+gram = [Mass] = g
 mole = [Substance] = mol
 kelvin = [Temperature]; offset: 0 = K = degK = °K = degree_Kelvin = degreeK
 radian = [] = rad
@@ -190,7 +190,7 @@ sverdrup = 1e6 * meter ^ 3 / second = sv
 galileo = centimeter / second ^ 2 = Gal
 
 # Force
-[Force] = [mass] * [Acceleration]
+[Force] = [Mass] * [Acceleration]
 newton = kilogram * meter / second ^ 2 = N
 dyne = gram * centimeter / second ^ 2 = dyn
 force_kilogram = g_0 * kilogram = kgf = kilogram_force = pond
@@ -220,7 +220,7 @@ tonne_of_oil_equivalent = 1e10 * international_calorie = toe
 atmosphere_liter = atmosphere * liter = atm_l
 
 # Power
-[power] = [Energy] / [Time]
+[Power] = [Energy] / [Time]
 watt = joule / second = W
 volt_ampere = volt * ampere = VA
 horsepower = 550 * foot * force_pound / second = hp = UK_horsepower = hydraulic_horsepower
@@ -233,10 +233,10 @@ standard_liter_per_minute = atmosphere * liter / minute = slpm = slm
 conventional_watt_90 = K_J90 ^ 2 * R_K90 / (K_J ^ 2 * R_K) * watt = W_90
 
 # Momentum
-[momentum] = [Length] * [mass] / [Time]
+[Momentum] = [Length] * [Mass] / [Time]
 
 # Density (as auxiliary for pressure)
-[Density] = [mass] / [Volume]
+[Density] = [Mass] / [Volume]
 mercury = 13.5951 * kilogram / liter = Hg = Hg_0C = Hg_32F = conventional_mercury
 water = 1.0 * kilogram / liter = H2O = conventional_water
 mercury_60F = 13.5568 * kilogram / liter = Hg_60F   # approximate
@@ -329,7 +329,7 @@ lumen = candela * steradian = lm
 lux = lumen / meter ^ 2 = lx
 
 # Intensity
-[Intensity] = [power] / [Area]
+[Intensity] = [Power] / [Area]
 atomic_unit_of_intensity = 0.5 * ε_0 * c * atomic_unit_of_electric_field ^ 2 = a_u_intensity
 
 # Current
