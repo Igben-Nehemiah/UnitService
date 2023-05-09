@@ -16,17 +16,23 @@ namespace UnitService.Core.Models
         /// <param name="massExp"></param>
         /// <param name="currentExp"></param>
         /// <param name="tempExp"></param>
-        public Dimension(double lengthExp,
-            double timeExp,
-            double massExp,
-            double currentExp,
-            double tempExp)
+        /// <param name="luminousIntensityExp"></param>
+        /// <param name="amountOfSubstanceExp"></param>
+        public Dimension(double lengthExp = 0,
+            double timeExp = 0,
+            double massExp = 0,
+            double currentExp = 0,
+            double tempExp = 0,
+            double luminousIntensityExp = 0,
+            double amountOfSubstanceExp = 0)
         {
             LengthExp = lengthExp;
             TimeExp = timeExp;
             MassExp = massExp;
             CurrentExp = currentExp;
             TempExp = tempExp;
+            LuminousIntensityExp = luminousIntensityExp;
+            AmountOfSubstanceExp = amountOfSubstanceExp;
         }
 
         #region Properties and Fields
@@ -34,13 +40,16 @@ namespace UnitService.Core.Models
         /// <summary>
         /// Dimension exponent
         /// </summary>
-        public double LengthExp, TimeExp, MassExp, CurrentExp, TempExp;
+        public double LengthExp, TimeExp, MassExp, CurrentExp,
+            TempExp, LuminousIntensityExp, AmountOfSubstanceExp;
         private static readonly string NONE = "None";
         private static readonly string LENGTH = "[Length]";
         private static readonly string TIME = "[Time]";
         private static readonly string MASS = "[Mass]";
         private static readonly string CURRENT = "[Current]";
         private static readonly string TEMPERATURE = "[Temperature]";
+        private static readonly string LUMINOUS_INTENSITY = "[LUMINOUS_INT]";
+        private static readonly string AMOUNT_OF_SUBSTANCE = "[Temperature]";
         #endregion
 
         #region Methods
@@ -63,6 +72,8 @@ namespace UnitService.Core.Models
                 [MASS] = 0,
                 [TEMPERATURE] = 0,
                 [CURRENT] = 0,
+                [LUMINOUS_INTENSITY] = 0,
+                [AMOUNT_OF_SUBSTANCE] = 0
             };
 
             if (dimensionStr == "1")
@@ -106,7 +117,9 @@ namespace UnitService.Core.Models
                 timeExp: dimensionDictionary[TIME],
                 massExp: dimensionDictionary[MASS],
                 currentExp: dimensionDictionary[CURRENT],
-                tempExp: dimensionDictionary[TEMPERATURE]);
+                tempExp: dimensionDictionary[TEMPERATURE],
+                luminousIntensityExp: dimensionDictionary[LUMINOUS_INTENSITY],
+                amountOfSubstanceExp: dimensionDictionary[AMOUNT_OF_SUBSTANCE]);
 
             static string PadWithSquareBracket(string str) => "[" + str + "]";
             static string StripOffBrackets(string str)
@@ -198,7 +211,9 @@ namespace UnitService.Core.Models
                 first.TimeExp + second.TimeExp,
                 first.MassExp + second.MassExp,
                 first.CurrentExp + second.CurrentExp,
-                first.TempExp + second.TempExp);
+                first.TempExp + second.TempExp,
+                first.LuminousIntensityExp + second.LuminousIntensityExp,
+                first.AmountOfSubstanceExp + second.AmountOfSubstanceExp);
         }
 
         /// <summary>
@@ -214,7 +229,9 @@ namespace UnitService.Core.Models
                 first.TimeExp - second.TimeExp,
                 first.MassExp - second.MassExp,
                 first.CurrentExp - second.CurrentExp,
-                first.TempExp - second.TempExp);
+                first.TempExp - second.TempExp,
+                first.LuminousIntensityExp - second.LuminousIntensityExp,
+                first.AmountOfSubstanceExp - second.AmountOfSubstanceExp);
         }
 
         /// <summary>
@@ -251,19 +268,25 @@ namespace UnitService.Core.Models
         /// Converts dimension to tuple.
         /// </summary>
         /// <param name="value"></param>
-        public static implicit operator (double LengthExp, double TimeExp, double MassExp, double CurrentExp, double TempExp)
-            (Dimension value)
+        public static implicit operator (double LengthExp, double TimeExp,
+            double MassExp, double CurrentExp, double TempExp,
+            double LuminousIntensity, double AmountOfSubstance)(Dimension value)
         {
-            return (value.LengthExp, value.TimeExp, value.MassExp, value.CurrentExp, value.TempExp);
+            return (value.LengthExp, value.TimeExp, value.MassExp, 
+                value.CurrentExp, value.TempExp, value.LuminousIntensityExp, value.AmountOfSubstanceExp);
         }
 
         /// <summary>
         /// Converts tuple to dimension.
         /// </summary>
         /// <param name="value"></param>
-        public static implicit operator Dimension((double LengthExp, double TimeExp, double MassExp, double CurrentExp, double TempExp) value)
+        public static implicit operator Dimension((double LengthExp, double TimeExp, 
+            double MassExp, double CurrentExp, double TempExp, 
+            double LuminousIntensity, double AmountOfSubstance) value)
         {
-            return new Dimension(value.LengthExp, value.TimeExp, value.MassExp, value.CurrentExp, value.TempExp);
+            return new Dimension(value.LengthExp, 
+                value.TimeExp, value.MassExp, value.CurrentExp, 
+                value.TempExp, value.LuminousIntensity, value.AmountOfSubstance);
         }
         #endregion
 
@@ -316,7 +339,7 @@ namespace UnitService.Core.Models
         /// <returns>A string that represents the dimension</returns>
         public override string ToString()
         {
-            if (this == (0, 0, 0, 0, 0)) return NONE;
+            if (this == default) return NONE;
 
             string dim = LengthExp != 0 ? LENGTH + (LengthExp == 1 ? "" : "^" + LengthExp) : "";
             dim += TimeExp != 0 ? TIME + (TimeExp == 1 ? "" : "^" + TimeExp) : "";
