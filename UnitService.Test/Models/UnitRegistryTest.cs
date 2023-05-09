@@ -1,4 +1,6 @@
-﻿namespace UnitService.Test.Models
+﻿using UnitService.Core;
+
+namespace UnitService.Test.Models
 {
     public class UnitRegistryTest
     { 
