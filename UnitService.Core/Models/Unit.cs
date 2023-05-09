@@ -16,7 +16,7 @@ namespace UnitService.Core.Models
         /// <param name="dimension"></param>
         public Unit(string name,
             string symbol,
-            (double M, double C) baseUnitRelationship = default,
+            (double Multiplier, double Offset) baseUnitRelationship = default,
             Dimension dimension = default)
         {
             Name = name;
@@ -25,12 +25,6 @@ namespace UnitService.Core.Models
             ReferenceUnitRelationship = baseUnitRelationship;
         }
 
-        //public Unit(string name,
-        //    string symbol,
-        //    object relationshipWithAnotherUnit)
-        //{
-
-        //}
         #region Properties
         /// <summary>
         /// This is the unit's name.
@@ -61,6 +55,16 @@ namespace UnitService.Core.Models
         /// <param name="unit"></param>
         /// <returns>True if dimensions are true</returns>
         public bool HasSameDimensionAs(Unit unit) => Dimension == unit.Dimension;
+
+        //public static Unit CreateFrom(string name,
+        //    string symbol,
+        //    UnitsRelation unitsRelationship)
+        //{
+        //    return new Unit(name, 
+        //        symbol, 
+        //        (unitsRelationship.ReferenceUnit.Magnitude, ),
+        //        unitsRelationship.ReferenceUnit.Dimension);
+        //}
 
         /// <summary>
         /// Gets the string representation of a unit.
@@ -136,5 +140,22 @@ namespace UnitService.Core.Models
             return HashCode.Combine(Name, Symbol, Dimension);
         }
         #endregion
+    }
+
+    internal struct UnitsRelation
+    {
+
+        public UnitsRelation(double multiplier,
+            double offset, 
+            Unit referenceUnit)
+        {
+            Multiplier = multiplier;
+            Offset = offset;
+            ReferenceUnit = referenceUnit;
+        }
+
+        public double Multiplier { get; set; }
+        public double Offset { get; set; }
+        public Unit ReferenceUnit { get; set; }
     }
 }

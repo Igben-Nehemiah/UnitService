@@ -9,7 +9,7 @@ using UnitService.Core.Models;
 namespace UnitService.Core
 {
     /// <summary>
-    /// This is an abstraction fo the units registry.
+    /// This is an abstraction for the units registry.
     /// </summary>
     public static class UnitRegistry
     {
@@ -21,7 +21,7 @@ namespace UnitService.Core
         {
             _opts = new UnitRegistryOptions();
             LoadConstantsAsync().Await();
-            LoadPrefixesAsync().Await();
+            //LoadPrefixesAsync().Await();
             LoadUnitsAsync().Await();
         }
 
@@ -109,7 +109,11 @@ namespace UnitService.Core
                     if (i != 1)
                     {
                         var key = parts[i].Trim();
-                        if (!string.IsNullOrEmpty(key) && key != "_") registry.Add(key, parts[1].Trim());
+                        if (!string.IsNullOrEmpty(key) && key != "_")
+                        {
+                            registry.Add(key, parts[1].Trim());
+                            units.Add(key, new Unit());
+                        }
                     }
                 }
             }
