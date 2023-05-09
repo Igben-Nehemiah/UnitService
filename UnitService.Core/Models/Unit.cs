@@ -25,6 +25,12 @@ namespace UnitService.Core.Models
             ReferenceUnitRelationship = baseUnitRelationship;
         }
 
+        //public Unit(string name,
+        //    string symbol,
+        //    object relationshipWithAnotherUnit)
+        //{
+
+        //}
         #region Properties
         /// <summary>
         /// This is the unit's name.
