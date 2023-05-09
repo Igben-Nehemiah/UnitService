@@ -17,6 +17,10 @@ namespace UnitService.Core
         private static readonly Dictionary<string, Unit>
             units = new Dictionary<string, Unit>();
 
+        private static readonly Dictionary<string, string> 
+            _registry = new Dictionary<string, string>();
+
+
         static UnitRegistry()
         {
             _opts = new UnitRegistryOptions();
@@ -78,7 +82,6 @@ namespace UnitService.Core
         {
             using StreamReader reader = new StreamReader(filePath);
 
-            Dictionary<string, string> registry = new Dictionary<string, string>();
 
             var line = reader.ReadLine();
 
@@ -92,7 +95,7 @@ namespace UnitService.Core
                 line = reader.ReadLine();
             }
 
-            return Task.FromResult(registry);
+            return Task.FromResult(_registry);
 
             void ExtractRecords(string line)
             {
@@ -104,6 +107,8 @@ namespace UnitService.Core
 
                 if (parts.Length == 1) return;
 
+                if (parts[0].Contains('[')) return; // Is dimension
+
                 for (int i = 0; i < parts.Length; i++)
                 {
                     if (i != 1)
@@ -111,8 +116,7 @@ namespace UnitService.Core
                         var key = parts[i].Trim();
                         if (!string.IsNullOrEmpty(key) && key != "_")
                         {
-                            registry.Add(key, parts[1].Trim());
-                            units.Add(key, new Unit());
+                            _registry.Add(key, parts[1].Trim());
                         }
                     }
                 }
