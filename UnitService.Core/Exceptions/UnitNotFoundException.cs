@@ -5,7 +5,7 @@ using UnitService.Core.Models;
 namespace UnitService.Core.Exceptions
 {
     [Serializable]
-    internal sealed class UnitNotFoundException : ApplicationException
+    internal class UnitNotFoundException : ApplicationException
     {
         public UnitNotFoundException()
            : base("Unit not found in registry") { }

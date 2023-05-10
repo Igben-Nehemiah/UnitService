@@ -6,7 +6,7 @@ namespace UnitService.Core.Exceptions
 {
 
     [Serializable]
-    internal sealed class DimensionNotFoundException : ApplicationException
+    internal class DimensionNotFoundException : ApplicationException
     {
         public DimensionNotFoundException()
             : base("Dimension not found in registry") { }

@@ -5,7 +5,7 @@ using UnitService.Core.Models;
 namespace UnitService.Core.Exceptions
 {
     [Serializable]
-    internal sealed class InvalidReferenceUnitRelationshipException : ApplicationException
+    internal class InvalidReferenceUnitRelationshipException : ApplicationException
     {
         public InvalidReferenceUnitRelationshipException()
             : base("Dimension not found in registry") { }

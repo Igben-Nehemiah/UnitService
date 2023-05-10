@@ -5,7 +5,7 @@ using UnitService.Core.Models;
 namespace UnitService.Core.Exceptions
 {
     [Serializable]
-    internal sealed class DimensionParseException : ApplicationException
+    internal class DimensionParseException : ApplicationException
     {
         public DimensionParseException()
            : base("Could not parse string to dimension") { }
