@@ -16,7 +16,7 @@ namespace UnitService.Core.Models
         /// <param name="dimension"></param>
         public Unit(string name,
             string symbol,
-            (double Multiplier, double Offset) baseUnitRelationship = default,
+            (double Scale, double Offset) baseUnitRelationship = default,
             Dimension dimension = default)
         {
             Name = name;
@@ -41,7 +41,7 @@ namespace UnitService.Core.Models
         /// <summary>
         /// This is defines the relationship between unit and reference unit.
         /// </summary>
-        public (double M, double C) ReferenceUnitRelationship { get; }
+        public (double Scale, double Offset) ReferenceUnitRelationship { get; }
         /// <summary>
         /// Is true if unit is reference unit.
         /// </summary>
@@ -54,7 +54,7 @@ namespace UnitService.Core.Models
         /// </summary>
         /// <param name="unit"></param>
         /// <returns>True if dimensions are true</returns>
-        public bool HasSameDimensionAs(Unit unit) => Dimension == unit.Dimension;
+        public bool IsConvertableTo(Unit unit) => Dimension == unit.Dimension;
 
         //public static Unit CreateFrom(string name,
         //    string symbol,
@@ -89,18 +89,6 @@ namespace UnitService.Core.Models
         /// <param name="unit2"></param>
         /// <returns>Returns true if units are not the same else false.</returns>
         public static bool operator !=(Unit unit1, Unit unit2) => !(unit1 == unit2);
-
-        /// <summary>
-        /// Multiplies two units.
-        /// </summary>
-        /// <param name="left"></param>
-        /// <param name="right"></param>
-        /// <returns>Result unit.</returns>
-        /// <exception cref="NotImplementedException"></exception>
-        public static Unit operator *(Unit left, Unit right)
-        {
-            throw new NotImplementedException();
-        }
         #endregion
 
         #region Equality
@@ -145,16 +133,16 @@ namespace UnitService.Core.Models
     internal struct UnitsRelation
     {
 
-        public UnitsRelation(double multiplier,
+        public UnitsRelation(double scale,
             double offset, 
             Unit referenceUnit)
         {
-            Multiplier = multiplier;
+            Scale = scale;
             Offset = offset;
             ReferenceUnit = referenceUnit;
         }
 
-        public double Multiplier { get; set; }
+        public double Scale { get; set; }
         public double Offset { get; set; }
         public Unit ReferenceUnit { get; set; }
     }
