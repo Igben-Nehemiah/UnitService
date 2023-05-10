@@ -5,7 +5,7 @@ using UnitService.Core.Models;
 namespace UnitService.Core.Exceptions
 {
     [Serializable]
-    internal sealed class DimensionsMismatchException : ApplicationException
+    internal class DimensionsMismatchException : ApplicationException
     {
         public DimensionsMismatchException()
             : base("The Dimensions operated on do not match") { }
