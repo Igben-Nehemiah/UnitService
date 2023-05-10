@@ -1,4 +1,4 @@
-﻿namespace UnitService.Core.Models
+﻿namespace UnitService.Core
 {
     /// <summary>
     /// This is an abstraction of the configuration options for a unit registry

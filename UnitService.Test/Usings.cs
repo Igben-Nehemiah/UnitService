@@ -3,3 +3,4 @@ global using UnitService.Core.Models;
 global using UnitService.Core.Constants;
 global using UnitService.Core.Utils;
 global using UnitService.Test.Fixtures;
+global using UnitService.Core.Exceptions;

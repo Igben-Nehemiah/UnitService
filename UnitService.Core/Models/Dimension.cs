@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnitService.Core.Exceptions;
 
 namespace UnitService.Core.Models
 {
@@ -58,68 +59,75 @@ namespace UnitService.Core.Models
         /// </summary>
         /// <param name="dimensionStr"></param>
         /// <returns>The Parsed Dimension</returns>
-        /// <exception cref="Exception"></exception>
+        /// <exception cref="DimensionParseException"></exception>
         private static Dimension ParseLiteral(string dimensionStr)
         {
-            dimensionStr = dimensionStr.Trim();
-            if (string.IsNullOrEmpty(dimensionStr)) // Check later
-                throw new Exception();
-
-            Dictionary<string, double> dimensionDictionary = new Dictionary<string, double>
+            try
             {
-                [LENGTH] = 0,
-                [TIME] = 0,
-                [MASS] = 0,
-                [TEMPERATURE] = 0,
-                [CURRENT] = 0,
-                [LUMINOUS_INTENSITY] = 0,
-                [AMOUNT_OF_SUBSTANCE] = 0
-            };
+                dimensionStr = dimensionStr.Trim();
+                if (string.IsNullOrEmpty(dimensionStr)) // Check later
+                    throw new Exception();
 
-            if (dimensionStr == "1")
-                return new Dimension();
-
-            int currentLeftSquareBracketIndex = dimensionStr.IndexOf("[");
-            int currentRightSquareBracketIndex = dimensionStr.IndexOf("]");
-
-            while (currentLeftSquareBracketIndex > -1 && currentRightSquareBracketIndex > -1)
-            {
-                string dimensionKey = PadWithSquareBracket(
-                    dimensionStr.Substring(currentLeftSquareBracketIndex + 1,
-                    currentRightSquareBracketIndex - currentLeftSquareBracketIndex - 1));
-
-                if (!dimensionDictionary.ContainsKey(dimensionKey))
-                    throw new Exception("Unregistered dimension specified");
-
-                if (currentRightSquareBracketIndex > 0 &&
-                    currentRightSquareBracketIndex < dimensionStr.Length) // there are still more characters
+                Dictionary<string, double> dimensionDictionary = new Dictionary<string, double>
                 {
-                    int nextLeftSquareBracketIndex = dimensionStr.IndexOf("[", currentRightSquareBracketIndex + 1);
+                    [LENGTH] = 0,
+                    [TIME] = 0,
+                    [MASS] = 0,
+                    [TEMPERATURE] = 0,
+                    [CURRENT] = 0,
+                    [LUMINOUS_INTENSITY] = 0,
+                    [AMOUNT_OF_SUBSTANCE] = 0
+                };
 
-                    string exponentPart = nextLeftSquareBracketIndex == -1 ?
-                        dimensionStr.Substring(currentRightSquareBracketIndex + 1,
-                            dimensionStr.Length - currentRightSquareBracketIndex - 1).Trim()
-                        : dimensionStr.Substring(currentRightSquareBracketIndex + 1,
-                            nextLeftSquareBracketIndex - currentRightSquareBracketIndex - 1).Trim();
+                if (dimensionStr == "1")
+                    return new Dimension();
+
+                int currentLeftSquareBracketIndex = dimensionStr.IndexOf("[");
+                int currentRightSquareBracketIndex = dimensionStr.IndexOf("]");
+
+                while (currentLeftSquareBracketIndex > -1 && currentRightSquareBracketIndex > -1)
+                {
+                    string dimensionKey = PadWithSquareBracket(
+                        dimensionStr.Substring(currentLeftSquareBracketIndex + 1,
+                        currentRightSquareBracketIndex - currentLeftSquareBracketIndex - 1));
+
+                    if (!dimensionDictionary.ContainsKey(dimensionKey))
+                        throw new Exception("Unregistered dimension specified");
+
+                    if (currentRightSquareBracketIndex > 0 &&
+                        currentRightSquareBracketIndex < dimensionStr.Length) // there are still more characters
+                    {
+                        int nextLeftSquareBracketIndex = dimensionStr.IndexOf("[", currentRightSquareBracketIndex + 1);
+
+                        string exponentPart = nextLeftSquareBracketIndex == -1 ?
+                            dimensionStr.Substring(currentRightSquareBracketIndex + 1,
+                                dimensionStr.Length - currentRightSquareBracketIndex - 1).Trim()
+                            : dimensionStr.Substring(currentRightSquareBracketIndex + 1,
+                                nextLeftSquareBracketIndex - currentRightSquareBracketIndex - 1).Trim();
 
 
-                    double exponent = string.IsNullOrEmpty(exponentPart) ? 1
-                        : double.Parse(StripOffBrackets(exponentPart[1..]));
+                        double exponent = string.IsNullOrEmpty(exponentPart) ? 1
+                            : double.Parse(StripOffBrackets(exponentPart[1..]));
 
-                    dimensionDictionary[dimensionKey] = exponent;
-                }
+                        dimensionDictionary[dimensionKey] = exponent;
+                    }
 
-                currentLeftSquareBracketIndex = dimensionStr.IndexOf("[", currentLeftSquareBracketIndex + 1);
-                currentRightSquareBracketIndex = dimensionStr.IndexOf("]", currentRightSquareBracketIndex + 1);
-            };
+                    currentLeftSquareBracketIndex = dimensionStr.IndexOf("[", currentLeftSquareBracketIndex + 1);
+                    currentRightSquareBracketIndex = dimensionStr.IndexOf("]", currentRightSquareBracketIndex + 1);
+                };
 
-            return new Dimension(lengthExp: dimensionDictionary[LENGTH],
-                timeExp: dimensionDictionary[TIME],
-                massExp: dimensionDictionary[MASS],
-                currentExp: dimensionDictionary[CURRENT],
-                tempExp: dimensionDictionary[TEMPERATURE],
-                luminousIntensityExp: dimensionDictionary[LUMINOUS_INTENSITY],
-                amountOfSubstanceExp: dimensionDictionary[AMOUNT_OF_SUBSTANCE]);
+                return new Dimension(lengthExp: dimensionDictionary[LENGTH],
+                    timeExp: dimensionDictionary[TIME],
+                    massExp: dimensionDictionary[MASS],
+                    currentExp: dimensionDictionary[CURRENT],
+                    tempExp: dimensionDictionary[TEMPERATURE],
+                    luminousIntensityExp: dimensionDictionary[LUMINOUS_INTENSITY],
+                    amountOfSubstanceExp: dimensionDictionary[AMOUNT_OF_SUBSTANCE]);
+            }
+            catch (Exception e)
+            {
+                throw new DimensionParseException($"Could not parse string '{dimensionStr}' as dimension", e);
+            }
 
             static string PadWithSquareBracket(string str) => "[" + str + "]";
             static string StripOffBrackets(string str)
@@ -139,7 +147,7 @@ namespace UnitService.Core.Models
         /// </summary>
         /// <param name="dim"></param>
         /// <returns>The Parsed Dimension</returns>
-        /// <exception cref="Exception"></exception>
+        /// <exception cref="DimensionParseException"></exception>
         public static Dimension Parse(string dim)
         {
             string[] parts = dim.Split('/');
@@ -164,7 +172,7 @@ namespace UnitService.Core.Models
                 dim = Parse(dimString);
                 return true;
             }
-            catch (Exception)
+            catch (DimensionParseException)
             {
                 dim = default;
                 return false;
@@ -254,14 +262,14 @@ namespace UnitService.Core.Models
         /// Converts dimension to string implicitly.
         /// </summary>
         /// <param name="dimension"></param>
-        /// <exception cref="Exception"></exception>
+        /// <exception cref="DimensionParseException"></exception>
         public static implicit operator string(Dimension dimension) => dimension.ToString();
 
         /// <summary>
         /// Converts string to dimension implicitly.
         /// </summary>
         /// <param name="dimensionString"></param>
-        /// <exception cref="Exception"></exception>
+        /// <exception cref="DimensionParseException"></exception>
         public static implicit operator Dimension(string dimensionString) => Parse(dimensionString);
 
         /// <summary>

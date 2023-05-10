@@ -1,4 +1,6 @@
-﻿namespace UnitService.Test.Models
+﻿using UnitService.Core;
+
+namespace UnitService.Test.Models
 {
     public class QuantityTest : IClassFixture<QuantityFixture>
     {
@@ -88,7 +90,7 @@
             Quantity lengthInMeters = new(1000, lengthUnit);
             Quantity timeInSeconds = new(10, timeUnit);
 
-            Assert.Throws<Exception>(() => lengthInMeters + timeInSeconds);
+            Assert.Throws<DimensionsMismatchException>(() => lengthInMeters + timeInSeconds);
         }
 
         [Fact]
