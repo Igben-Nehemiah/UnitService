@@ -1,4 +1,5 @@
 ﻿using System;
+using UnitService.Core.Exceptions;
 
 namespace UnitService.Core.Models
 {
@@ -39,13 +40,16 @@ namespace UnitService.Core.Models
         /// This converts the quantity to its equivalent in the base unit.
         /// </summary>
         /// <returns>Quantity in base unit</returns>
-        /// /// <exception cref="Exception"></exception>
+        /// <exception cref="DimensionsMismatchException"></exception>
+        /// <exception cref="InvalidReferenceUnitRelationshipException"></exception>
         public Quantity ConvertToBaseUnit()
         {
             if (Unit.IsReferenceUnit) return this;
 
-            var quantityMagnitudeInBaseUnit = 1 / Unit.ReferenceUnitRelationship.M *
-                (Magnitude - Unit.ReferenceUnitRelationship.C);
+            if (Unit.ReferenceUnitRelationship.Scale == 0) throw new InvalidReferenceUnitRelationshipException(Unit);
+
+            var quantityMagnitudeInBaseUnit = 1 / Unit.ReferenceUnitRelationship.Scale *
+                (Magnitude - Unit.ReferenceUnitRelationship.Offset);
 
             var baseUnit = UnitRegistry.GetBaseUnit(Dimension);
 
@@ -55,21 +59,22 @@ namespace UnitService.Core.Models
         /// <summary>
         /// This converts a quantity to specified 'to unit'.
         /// </summary>
-        /// <param name="toUnit"></param>
+        /// <param name="otherUnit"></param>
         /// <returns>Quantity in 'to unit'</returns>
-        /// <exception cref="Exception"></exception>
-        public Quantity ConvertTo(Unit toUnit)
+        /// <exception cref="DimensionsMismatchException"></exception>
+        /// <exception cref="InvalidReferenceUnitRelationshipException"></exception>
+        public Quantity ConvertTo(Unit otherUnit)
         {
-            if (!Unit.HasSameDimensionAs(toUnit)) throw new Exception();
+            if (!Unit.IsConvertableTo(otherUnit)) throw new DimensionsMismatchException();
 
             var quantityInBaseUnit = ConvertToBaseUnit();
 
-            if (toUnit.IsReferenceUnit) return quantityInBaseUnit;
+            if (otherUnit.IsReferenceUnit) return quantityInBaseUnit;
 
-            var magnitudeInToUnit = toUnit.ReferenceUnitRelationship.M * quantityInBaseUnit.Magnitude +
-                toUnit.ReferenceUnitRelationship.C;
+            var magnitudeInToUnit = otherUnit.ReferenceUnitRelationship.Scale * quantityInBaseUnit.Magnitude +
+                otherUnit.ReferenceUnitRelationship.Offset;
 
-            return new Quantity(magnitudeInToUnit, toUnit);
+            return new Quantity(magnitudeInToUnit, otherUnit);
         }
 
         /// <summary>
@@ -77,7 +82,7 @@ namespace UnitService.Core.Models
         /// </summary>
         /// <param name="unitAsString"></param>
         /// <returns>Quantity in 'to unit'</returns>
-        /// <exception cref="Exception"></exception>
+        /// <exception cref="DimensionsMismatchException"></exception>
         public Quantity ConvertTo(string unitAsString)
         {
             var toUnit = UnitRegistry.GetUnit(unitAsString);
@@ -90,6 +95,7 @@ namespace UnitService.Core.Models
         /// <param name="unit"></param>
         /// <param name="qty"></param>
         /// <returns>Quantity in 'to unit'</returns>
+        /// <exception cref="InvalidReferenceUnitRelationshipException"></exception>
         public bool TryConvertTo(Unit unit, out Quantity qty)
         {
             try
@@ -97,7 +103,7 @@ namespace UnitService.Core.Models
                 qty = ConvertTo(unit);
                 return true;
             }
-            catch (Exception)
+            catch (DimensionsMismatchException)
             {
                 qty = default;
                 return false;
@@ -138,14 +144,15 @@ namespace UnitService.Core.Models
         /// <param name="qty1"></param>
         /// <param name="qty2"></param>
         /// <returns>A quantity that is the result of the operation</returns>
-        /// <exception cref="Exception"></exception>
+        /// <exception cref="DimensionsMismatchException"></exception>
+        /// <exception cref="ArgumentNullException"></exception>
         public static Quantity operator +(Quantity qty1, Quantity qty2)
         {
             // Not possible to add quantities of different dimensions
-            if (!qty1.Unit.HasSameDimensionAs(qty2.Unit)) throw new Exception();
+            if (!qty1.Unit.IsConvertableTo(qty2.Unit)) throw new DimensionsMismatchException();
 
             // Check if the quantities both have valid magnitudes
-            if (!qty1.Magnitude.HasValue || !qty2.Magnitude.HasValue) throw new Exception();
+            if (!qty1.Magnitude.HasValue || !qty2.Magnitude.HasValue) throw new ArgumentNullException();
 
             // if quantities have the same unit, there is no need for a conversion
             if (qty1.Unit == qty2.Unit)
