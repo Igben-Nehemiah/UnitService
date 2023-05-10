@@ -90,7 +90,7 @@ namespace UnitService.Test.Models
             Quantity lengthInMeters = new(1000, lengthUnit);
             Quantity timeInSeconds = new(10, timeUnit);
 
-            Assert.Throws<Exception>(() => lengthInMeters + timeInSeconds);
+            Assert.Throws<DimensionsMismatchException>(() => lengthInMeters + timeInSeconds);
         }
 
         [Fact]

@@ -20,8 +20,7 @@ namespace UnitService.Test.Models
         [Fact]
         public void Parse_ShouldFail_When_ParsedStringContainsUnrecognisedDimension()
         {
-            var ex = Assert.Throws<Exception>(() => Dimension.Parse(@$"{Dimensions.LENGTH}/[Fake]"));
-            Assert.Equal("Unregistered dimension specified", ex.Message);
+            Assert.Throws<DimensionParseException>(() => Dimension.Parse(@$"{Dimensions.LENGTH}/[Fake]"));
         }
 
         [Fact]
