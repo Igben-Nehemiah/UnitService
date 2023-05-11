@@ -9,11 +9,12 @@ namespace UnitService.Core.Models
     public struct Quantity : IEquatable<Quantity>
     {
         /// <summary>
-        /// This is the constructor used to create a quantity
+        /// This is the constructor used to create a quantity from magnitude
+        /// and specified unit
         /// </summary>
         /// <param name="magnitude"></param>
         /// <param name="unit"></param>
-        public Quantity(double? magnitude, Unit unit)
+        public Quantity(double? magnitude, Unit unit = default)
         {
             Unit = unit;
             Magnitude = magnitude;
@@ -109,6 +110,12 @@ namespace UnitService.Core.Models
                 return false;
             }
         }
+
+        /// <summary>
+        /// This is used to check if the unit for a given quantity has been set.
+        /// </summary>
+        /// <returns>True if the unit of the quantity has been set, else false.</returns>
+        public bool HasUnitSet() => Unit != default;
 
         /// <summary>
         /// This is used to get the string representation of a quantity.
