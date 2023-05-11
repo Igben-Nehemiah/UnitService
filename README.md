@@ -1,4 +1,4 @@
-# UnitService
+﻿# UnitService
 
 [![Build and Test](https://github.com/Igben-Nehemiah/UnitService/actions/workflows/build-test.yml/badge.svg)](https://github.com/Igben-Nehemiah/UnitService/actions/workflows/build-test.yml)
 
@@ -8,6 +8,17 @@
 This is a C# library that provides useful functionalities for unit conversion.
 
 ## Design Philosophy
+In physics and other sciences, a quantity is a property that can be measured or calculated, such as length, 
+time, mass, or temperature. A unit is a standard of measurement used to quantify a particular quantity, 
+such as meters for length, seconds for time, kilograms for mass, or degrees Celsius for temperature. 
+A dimension is a fundamental physical parameter that describes the nature of a quantity, such as the 
+dimension of length, time, mass, or temperature.
+
+For example, the quantity of length can be measured in units of meters, feet, or inches, and has a 
+dimension of L (length). The quantity of time can be measured in units of seconds, minutes, or hours, and 
+has a dimension of T (time). The quantity of mass can be measured in units of kilograms, grams, or pounds, 
+and has a dimension of M (mass). The quantity of temperature can be measured in units of Celsius, 
+Fahrenheit, or Kelvin, and has a dimension of Θ (temperature).
 
 ## Installation 
 
